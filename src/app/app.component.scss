@@ -1,0 +1,14 @@
+@import '../styles.scss';
+
+.battleship {
+    padding: 10px 10px 0 10px;
+
+    &-heading {
+        text-align: center;
+        font-size: 80px;
+        letter-spacing: 6px;
+        color: rgba($color-primary, 0.95);
+        margin-block: 20px 0;
+        text-shadow: 0 0 20px white;
+    }
+}

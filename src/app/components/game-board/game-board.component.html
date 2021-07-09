@@ -1,0 +1,28 @@
+
+  <div class="x-axis-lables">
+    <span *ngFor="let label of xAxisLabels">{{label}}</span>
+  </div>
+
+  <!-- <div class="y-axis-lables">
+    <span *ngFor="let label of yAxisLabels">{{label}}</span>
+  </div> -->
+
+<div class="game-board">
+
+  <div class="game-board-row" *ngFor="let row of counter(amountOfRows); index as rowI"
+    [ngClass]="{'success': gameState === 1}">
+
+    <!-- <span class="y-axis-lables">{{yAxisLabels[rowI]}}</span> -->
+
+    <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
+      <!-- <ng-container *ngIf="rowI === 0">
+        <span></span>
+      </ng-container> -->
+
+      <button *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square"
+        (click)="squareClicked(squareI)" [disabled]="square.isClicked" [id]="squareI"
+        [ngClass]="{'ship': square.isShip}"></button>
+    </ng-container>
+  </div>
+
+</div>

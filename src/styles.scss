@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap');
+
+$color-primary: rgb(36, 56, 55);
+
+$font-primary: "Spicy Rice", cursive;
+$font-secondary: "Lato", sans-serif;
+
+
+html {
+    font-family: $font-primary;
+}
+
+body {
+    background-image: url(./assets/bg-image.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+}
