@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { EGameState } from 'src/app/enums/enums.enum';
 import { ISquareItem } from './game-board.interface';
@@ -16,13 +16,25 @@ export class GameBoardComponent implements OnInit {
   private amountOfShips: number = 10;
   private strikesCounter: number = 0;
 
-  public gameState: EGameState = EGameState.PLAYING;
   public boardSquaresArr: ISquareItem[] = [];
   public amountOfRows: number = 10;
   public squaresPerRow: number = 10;
   public progressCounter: number = 0;
   public xAxisLabels: string[] = [];
   public yAxisLabels: number[] = [];
+
+  @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
+
+  @Input()
+  get gameState(): EGameState { return this._gameState };
+  set gameState(gameState: EGameState) {
+    this._gameState = gameState;
+    if (this.strikesCounter === this.amountOfShips && gameState === EGameState.PLAYING) {
+      this.startNewGame();
+    }
+  }
+
+  private _gameState: EGameState;
 
   constructor() { }
 
@@ -44,7 +56,7 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private spreadShips() {
+  private spreadShips(): void {
     for (let i = 0; i < this.amountOfShips; i++) {
       let randomSquare: number = Math.floor(Math.random() * this.amountOfSquares);
 
@@ -52,20 +64,26 @@ export class GameBoardComponent implements OnInit {
         randomSquare = Math.floor(Math.random() * this.amountOfSquares);
       }
 
+      // // BUG BELOW vvvvv
       this.boardSquaresArr[randomSquare] = { isShip: true, isClicked: false };
+      // this.boardSquaresArr[randomSquare].isShip = true;
     }
   }
 
-  public trackByFn(index, item) {
+  public trackByFn(index, item): number {
     return index;
   }
 
-  public counter(length: number) {
+  public counter(length: number): number[] {
     return new Array(length);
   }
 
-  public squareClicked(squareIndex: number) {
+  public squareClicked(squareIndex: number): void {
     this.progressCounter++;
+
+    // // BUG BELOW vvvvv
+    // this.boardSquaresArr.find((item, index) => index === squareIndex && (item.isClicked = true));
+    // this.boardSquaresArr[squareIndex].isClicked = true;
 
     if (this.boardSquaresArr[squareIndex].isShip) {
       this.boardSquaresArr[squareIndex] = { isShip: true, isClicked: true };
@@ -76,11 +94,15 @@ export class GameBoardComponent implements OnInit {
     }
 
     if (this.strikesCounter === this.amountOfShips) {
-      this.gameState = EGameState.WON;
-      setTimeout(() => {
-        alert("הודעת ניצחון");
-      }, 300);
+      this.gameStateChanged.emit(EGameState.WON);
     }
   }
 
+  private startNewGame(): void {
+    this.strikesCounter = 0;
+    this.progressCounter = 0;
+    this.boardSquaresArr = new Array(this.amountOfSquares).fill(this.initSquareItem);
+    // console.log(this.boardSquaresArr);
+    this.spreadShips();
+  }
 }

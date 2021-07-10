@@ -1,0 +1,44 @@
+@import "../../../styles.scss";
+
+header {
+    .heading {
+        font-family: $font-display;
+        text-align: center;
+        font-size: 80px;
+        letter-spacing: 2px;
+        color: rgba($color-primary, 0.95);
+        margin-block: 20px 0;
+        text-shadow: 0 0 20px white;
+
+        @media screen and (max-width: 400px) {
+            font-size: 60px;
+        }
+    }
+}
+
+footer {
+    margin: 30px;
+
+    .new-game-btn {
+        display: block;
+        margin: auto;
+        padding: 10px 15px;
+        font-family: $font-primary;
+        font-weight: 900;
+        font-size: 20px;
+        cursor: pointer;
+        background-color: rgba(floralwhite, 0.8);
+        border: none;
+        border-radius: 6px;
+        transition: all .2s;
+        color: $color-primary;
+        border: 2px solid transparent;
+
+        &:hover {
+            background-color: rgba($color-primary, 0.8);
+            color: whitesmoke;
+            transform: scale(1.1);
+            border: 2px solid whitesmoke;
+        }
+    }
+}

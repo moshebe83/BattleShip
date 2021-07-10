@@ -1,4 +1,11 @@
-<table class="game-board">
+<div class="state-msg" *ngIf="gameState === 1">
+  <span>You</span>
+  <span>Go</span>
+  <span>Girl !</span>
+</div>
+
+
+<table class="game-board" [ngClass]="gameState === 0 ? '' : gameState === 1 ? 'success' : 'failed'">
   <thead>
     <tr>
       <td></td>
@@ -11,11 +18,10 @@
       <th class="game-board-axises">{{yAxisLabels[rowI]}}</th>
 
       <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
-        <td *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square"
-          [ngClass]="gameState === 0 ? '' : gameState === 1 ? 'success' : 'failed'">
+        <td *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square">
 
-          <button (click)="squareClicked(squareI)" [disabled]="square.isClicked" class="game-board-row-square-btn"
-            [ngClass]="{'ship': square.isShip}"  [id]="squareI">
+          <button (click)="squareClicked(squareI)" [disabled]="gameState !== 0 || square.isClicked"
+            class="game-board-row-square-btn" [ngClass]="{'ship': square.isShip}" [id]="squareI">
           </button>
         </td>
       </ng-container>

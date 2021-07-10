@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { GameBoardComponent } from './components/game-board/game-board.component';
+import { PlayGameComponent } from './layout/play-game/play-game.component';
 
 const routes: Routes = [
-  { path: 'battleship', component: GameBoardComponent },
+  { path: 'battleship', component: PlayGameComponent },
   { path: '', pathMatch: 'full', redirectTo: 'battleship' }
 ];
 
