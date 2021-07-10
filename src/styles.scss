@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&family=Spicy+Rice&display=swap');
 
-$color-primary: rgb(36, 56, 55);
+$color-primary: rgb(33, 49, 48);
 
-$font-primary: "Spicy Rice", cursive;
-$font-secondary: "Lato", sans-serif;
+$font-primary: 'Raleway', sans-serif;
+$font-display: "Spicy Rice", cursive;
 
 
 html {
@@ -14,4 +14,5 @@ body {
     background-image: url(./assets/bg-image.jpg);
     background-size: cover;
     background-attachment: fixed;
+    background-position: center;
 }

@@ -1,28 +1,25 @@
+<table class="game-board">
+  <thead>
+    <tr>
+      <td></td>
+      <th *ngFor="let label of xAxisLabels" class="game-board-axises">{{label}}</th>
+    </tr>
+  </thead>
 
-  <div class="x-axis-lables">
-    <span *ngFor="let label of xAxisLabels">{{label}}</span>
-  </div>
+  <tbody>
+    <tr class="game-board-row" *ngFor="let row of counter(amountOfRows); trackBy: trackByFn; index as rowI">
+      <th class="game-board-axises">{{yAxisLabels[rowI]}}</th>
 
-  <!-- <div class="y-axis-lables">
-    <span *ngFor="let label of yAxisLabels">{{label}}</span>
-  </div> -->
+      <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
+        <td *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square"
+          [ngClass]="gameState === 0 ? '' : gameState === 1 ? 'success' : 'failed'">
 
-<div class="game-board">
+          <button (click)="squareClicked(squareI)" [disabled]="square.isClicked" class="game-board-row-square-btn"
+            [ngClass]="{'ship': square.isShip}"  [id]="squareI">
+          </button>
+        </td>
+      </ng-container>
 
-  <div class="game-board-row" *ngFor="let row of counter(amountOfRows); index as rowI"
-    [ngClass]="{'success': gameState === 1}">
-
-    <!-- <span class="y-axis-lables">{{yAxisLabels[rowI]}}</span> -->
-
-    <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
-      <!-- <ng-container *ngIf="rowI === 0">
-        <span></span>
-      </ng-container> -->
-
-      <button *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square"
-        (click)="squareClicked(squareI)" [disabled]="square.isClicked" [id]="squareI"
-        [ngClass]="{'ship': square.isShip}"></button>
-    </ng-container>
-  </div>
-
-</div>
+    </tr>
+  </tbody>
+</table>
