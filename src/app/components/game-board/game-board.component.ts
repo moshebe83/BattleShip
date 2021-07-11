@@ -11,15 +11,14 @@ import { ISquareItem } from './game-board.interface';
 
 export class GameBoardComponent implements OnInit {
 
-  private initSquareItem: ISquareItem = { isShip: false, isClicked: false };
   private amountOfSquares: number;
   private amountOfShips: number = 10;
-  private strikesCounter: number = 0;
+  private strikesCounter: number;
 
-  public boardSquaresArr: ISquareItem[] = [];
+  public progressCounter: number;
+  public boardSquaresArr: ISquareItem[];
   public amountOfRows: number = 10;
   public squaresPerRow: number = 10;
-  public progressCounter: number = 0;
   public xAxisLabels: string[] = [];
   public yAxisLabels: number[] = [];
 
@@ -40,19 +39,24 @@ export class GameBoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.amountOfSquares = this.amountOfRows * this.squaresPerRow;
-    this.boardSquaresArr = new Array(this.amountOfSquares).fill(this.initSquareItem);
-
     this.createAxiesLabels();
-    this.spreadShips();
+    this.startNewGame();
   }
 
   private createAxiesLabels() {
-    for (let i = 0; i < this.squaresPerRow; i++) {
-      this.xAxisLabels.push((i + 10).toString(36).toUpperCase());
+    for (let i = 1; i <= this.squaresPerRow; i++) {
+      this.xAxisLabels.push((i + 9).toString(36).toUpperCase());
     }
 
-    for (let i = 0; i < this.amountOfRows; i++) {
-      this.yAxisLabels.push(i + 1);
+    for (let i = 1; i <= this.amountOfRows; i++) {
+      this.yAxisLabels.push(i);
+    }
+  }
+
+  private createBoardSquares() {
+    this.boardSquaresArr = [];
+    for (let i = 0; i < this.amountOfSquares; i++) {
+      this.boardSquaresArr.push({ id: i, isShip: false, isClicked: false })
     }
   }
 
@@ -64,13 +68,11 @@ export class GameBoardComponent implements OnInit {
         randomSquare = Math.floor(Math.random() * this.amountOfSquares);
       }
 
-      // // BUG BELOW vvvvv
-      this.boardSquaresArr[randomSquare] = { isShip: true, isClicked: false };
-      // this.boardSquaresArr[randomSquare].isShip = true;
+      this.boardSquaresArr[randomSquare].isShip = true;
     }
   }
 
-  public trackByFn(index, item): number {
+  public trackByFn(index): number {
     return index;
   }
 
@@ -80,17 +82,10 @@ export class GameBoardComponent implements OnInit {
 
   public squareClicked(squareIndex: number): void {
     this.progressCounter++;
-
-    // // BUG BELOW vvvvv
-    // this.boardSquaresArr.find((item, index) => index === squareIndex && (item.isClicked = true));
-    // this.boardSquaresArr[squareIndex].isClicked = true;
+    this.boardSquaresArr[squareIndex].isClicked = true;
 
     if (this.boardSquaresArr[squareIndex].isShip) {
-      this.boardSquaresArr[squareIndex] = { isShip: true, isClicked: true };
       this.strikesCounter++;
-    }
-    else {
-      this.boardSquaresArr[squareIndex] = { isShip: false, isClicked: true };
     }
 
     if (this.strikesCounter === this.amountOfShips) {
@@ -101,8 +96,7 @@ export class GameBoardComponent implements OnInit {
   private startNewGame(): void {
     this.strikesCounter = 0;
     this.progressCounter = 0;
-    this.boardSquaresArr = new Array(this.amountOfSquares).fill(this.initSquareItem);
-    // console.log(this.boardSquaresArr);
+    this.createBoardSquares();
     this.spreadShips();
   }
 }

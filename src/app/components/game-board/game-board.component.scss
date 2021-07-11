@@ -48,19 +48,21 @@
             max-width: 10%;
 
             &-btn {
+                position: relative;
                 height: 100%;
                 width: 100%;
                 border: none;
                 background-color: rgba($color-primary, 0.85);
                 box-shadow: 0 0 5px 1px white;
                 transition: background-color 0.2s ease-out;
+                padding: 3px;
 
                 &:hover,
                 &:focus {
                     background-color: rgba(#eee, 0.5);
                 }
 
-                &:disabled {
+                &.clicked {
                     &.ship {
                         background-color: rgba(185, 30, 30, 0.8);
                     }
@@ -69,8 +71,20 @@
                     }
                 }
 
-                &:not(:disabled) {
+                &:not(.clicked) {
                     cursor: pointer;
+                }
+
+                .ship-img {
+                    width: 100%;
+                    filter: brightness(2) contrast(2);
+                }
+                .boom-img {
+                    position: absolute;
+                    width: 100%;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
                 }
             }
         }
