@@ -18,8 +18,10 @@
       <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
         <td *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square">
 
-          <button (click)="squareClicked(squareI)" [disabled]="gameState !== 0 || square.isClicked"
-            class="game-board-row-square-btn" [ngClass]="{'ship': square.isShip}" [id]="squareI">
+          <button (click)="squareClicked(squareI)" [disabled]="gameState !== 0" class="game-board-row-square-btn"
+            [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [id]="squareI">
+            <img class="ship-img" *ngIf="square.isShip" src="./assets/submarine_3d.png" alt="ship">
+            <img class="boom-img" *ngIf="square.isShip && square.isClicked" src="./assets/Boom-PNG-File.png" alt="boom">
           </button>
         </td>
       </ng-container>
