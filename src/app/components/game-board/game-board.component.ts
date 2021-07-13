@@ -21,6 +21,7 @@ export class GameBoardComponent implements OnInit {
   public squaresPerRow: number = 10;
   public xAxisLabels: string[] = [];
   public yAxisLabels: number[] = [];
+  public gameStateMsg: string;
 
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
 
@@ -90,10 +91,12 @@ export class GameBoardComponent implements OnInit {
 
     if (this.strikesCounter === this.amountOfShips) {
       this.gameStateChanged.emit(EGameState.WON);
+      this.gameStateMsg = 'You Go Girl!';
     }
   }
-
+  
   private startNewGame(): void {
+    this.gameStateMsg = '';
     this.strikesCounter = 0;
     this.progressCounter = 0;
     this.createBoardSquares();
