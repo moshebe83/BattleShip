@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { EGameState } from 'src/app/enums/enums.enum';
+import { EGameState } from 'src/app/enums/battleship.enum';
 import { ISquareItem } from './game-board.interface';
 
 @Component({
