@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { EGameState } from 'src/app/enums/enums.enum';
+import { EGameState } from 'src/app/enums/battleship.enum';
 
 @Component({
   selector: 'app-play-game',
