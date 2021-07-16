@@ -11,17 +11,17 @@ import { ISquareItem } from './game-board.interface';
 
 export class GameBoardComponent implements OnInit {
 
-  private amountOfSquares: number;
+  private amountOfSquares: number = 0;
   private amountOfShips: number = 10;
-  private strikesCounter: number;
+  private strikesCounter: number = 0;
 
-  public progressCounter: number;
-  public boardSquaresArr: ISquareItem[];
+  public progressCounter: number = 0;
+  public boardSquaresArr: ISquareItem[] = [];
   public amountOfRows: number = 10;
   public squaresPerRow: number = 10;
   public xAxisLabels: string[] = [];
   public yAxisLabels: number[] = [];
-  public gameStateMsg: string;
+  public gameStateMsg: string = '';
 
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
 
@@ -34,7 +34,7 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private _gameState: EGameState;
+  private _gameState: EGameState = EGameState.PLAYING;
 
   constructor() { }
 
@@ -73,7 +73,7 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  public trackByFn(index): number {
+  public trackByFn(index: number): number {
     return index;
   }
 
