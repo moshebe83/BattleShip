@@ -1,5 +1,7 @@
 export interface ISquareItem {
-    id: number,
     isShip: boolean,
-    isClicked: boolean
+    isClicked: boolean,
+    shipId: number,
+    shipSize: number,
+    isFirstSquareOfShip?: boolean,
 }

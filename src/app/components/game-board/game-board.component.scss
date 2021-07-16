@@ -33,7 +33,7 @@
         padding: 2px;
     }
 
-    &.success {
+    &.won {
         filter: blur(4px);
         .game-board-row-square-btn {
             background-color: rgba(40, 87, 173, 0.8);
@@ -42,6 +42,7 @@
 
     &-row {
         &-square {
+            position: relative;
             height: 44px;
             width: 44px;
             max-width: 10%;
@@ -63,21 +64,36 @@
 
                 &.clicked {
                     &.ship {
-                        background-color: rgba(185, 30, 30, 0.8);
+                        background-color: rgba(155, 30, 30, 0.8);
                     }
                     &:not(.ship) {
-                        background-color: rgba(65, 183, 70, 0.8);
+                        background-color: rgba(35, 153, 70, 0.8);
                     }
                 }
 
-                &:not(.clicked) {
+                &:not(.clicked, :disabled) {
                     cursor: pointer;
                 }
 
                 .ship-img {
-                    width: 100%;
-                    filter: brightness(2) contrast(2);
+                    z-index: 1;
+                    position: absolute;
+                    pointer-events: none;
+                    &.small {
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                    &:not(.small) {
+                        height: 100%; 
+                        left: 5px;
+                        top: 0;
+                    }
+                    &:not(.medium) {
+                        filter: brightness(2) contrast(2);
+                    }
                 }
+
                 .boom-img {
                     position: absolute;
                     width: 100%;

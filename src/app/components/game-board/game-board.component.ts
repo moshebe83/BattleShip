@@ -14,6 +14,7 @@ export class GameBoardComponent implements OnInit {
   private amountOfSquares: number = 0;
   private amountOfShips: number = 10;
   private strikesCounter: number = 0;
+  private _gameState: EGameState = EGameState.PLAYING;
 
   public progressCounter: number = 0;
   public boardSquaresArr: ISquareItem[] = [];
@@ -34,8 +35,6 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private _gameState: EGameState = EGameState.PLAYING;
-
   constructor() { }
 
   ngOnInit(): void {
@@ -54,24 +53,53 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private createBoardSquares() {
+  private createBoardSquares(): void {
     this.boardSquaresArr = [];
     for (let i = 0; i < this.amountOfSquares; i++) {
-      this.boardSquaresArr.push({ id: i, isShip: false, isClicked: false })
+      this.boardSquaresArr.push({ isShip: false, isClicked: false, shipId: -1, shipSize: -1 });
     }
   }
 
   private spreadShips(): void {
     for (let i = 0; i < this.amountOfShips; i++) {
-      let randomSquare: number = Math.floor(Math.random() * this.amountOfSquares);
+      let randomShipSize: number = Math.floor(Math.random() * (this.squaresPerRow - 3)) + 1;
+      let randomSquareI: number = Math.floor(Math.random() * this.amountOfSquares);
 
-      while (this.boardSquaresArr[randomSquare].isShip) {
-        randomSquare = Math.floor(Math.random() * this.amountOfSquares);
+      while (this.boardSquaresArr[randomSquareI].isShip) {
+        randomSquareI = Math.floor(Math.random() * this.amountOfSquares);
       }
 
-      this.boardSquaresArr[randomSquare].isShip = true;
+      let currentShipSize: number = 0;
+
+      for (let j = 0;
+        j < randomShipSize && randomSquareI + j < this.amountOfSquares &&
+        !this.boardSquaresArr[randomSquareI + j].isShip && (j === 0 || (randomSquareI + j) % this.squaresPerRow !== 0);
+        j++
+      ) {
+        this.boardSquaresArr[randomSquareI + j] = {
+          isShip: true,
+          isClicked: false,
+          shipId: i,
+          isFirstSquareOfShip: j === 0,
+          shipSize: 1
+        }
+        currentShipSize++;
+      }
+
+      if (currentShipSize > 1) {
+        this.boardSquaresArr.map(square => square.shipId === i && (square.shipSize = currentShipSize));
+      }
     }
   }
+
+  private startNewGame(): void {
+    this.gameStateMsg = '';
+    this.strikesCounter = 0;
+    this.progressCounter = 0;
+    this.createBoardSquares();
+    this.spreadShips();
+  }
+
 
   public trackByFn(index: number): number {
     return index;
@@ -81,11 +109,13 @@ export class GameBoardComponent implements OnInit {
     return new Array(length);
   }
 
-  public squareClicked(squareIndex: number): void {
+  public squareClicked(squareIndex: number, shipId: number): void {
     this.progressCounter++;
-    this.boardSquaresArr[squareIndex].isClicked = true;
 
-    if (this.boardSquaresArr[squareIndex].isShip) {
+    if (shipId === -1) {
+      this.boardSquaresArr[squareIndex].isClicked = true;
+    } else {
+      this.boardSquaresArr.map(square => square.shipId === shipId && (square.isClicked = true));
       this.strikesCounter++;
     }
 
@@ -93,13 +123,5 @@ export class GameBoardComponent implements OnInit {
       this.gameStateChanged.emit(EGameState.WON);
       this.gameStateMsg = 'You Go Girl!';
     }
-  }
-  
-  private startNewGame(): void {
-    this.gameStateMsg = '';
-    this.strikesCounter = 0;
-    this.progressCounter = 0;
-    this.createBoardSquares();
-    this.spreadShips();
   }
 }

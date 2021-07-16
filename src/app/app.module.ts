@@ -11,13 +11,15 @@ import { GameBoardComponent } from './components/game-board/game-board.component
 
 // Pipes
 import { MatrixPipe } from './pipes/matrix.pipe';
+import { GetIconPipe } from './pipes/get-icon.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameBoardComponent,
     MatrixPipe,
-    PlayGameComponent
+    PlayGameComponent,
+    GetIconPipe
   ],
   imports: [
     BrowserModule,

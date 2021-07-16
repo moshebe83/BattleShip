@@ -3,13 +3,14 @@
 </div>
 
 
-<table class="game-board" [ngClass]="gameState === 0 ? '' : gameState === 1 ? 'success' : 'failed'">
+<table class="game-board" [ngClass]="gameState === 0 ? '' : gameState === 1 ? 'won' : 'lost'">
   <thead>
     <tr>
       <td></td>
       <th *ngFor="let label of xAxisLabels" class="game-board-axises">{{label}}</th>
     </tr>
   </thead>
+
 
   <tbody>
     <tr class="game-board-row" *ngFor="let row of counter(amountOfRows); trackBy: trackByFn; index as rowI">
@@ -18,18 +19,23 @@
       <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
         <td *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square">
 
-          <button (click)="squareClicked(squareI)" [disabled]="gameState !== 0" class="game-board-row-square-btn"
-            [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [id]="squareI"
-            [attr.aria-disabled]="square.isClicked">
+          <button (click)="!square.isClicked && squareClicked(squareI, square.shipId)" [disabled]="gameState !== 0"
+            class="game-board-row-square-btn" [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}"
+            [attr.aria-disabled]="square.isClicked" [attr.aria-label]="{'ship' : square.isShip &&  square.isClicked}">
 
-            <ng-container *ngIf="gameState === 0 && square.isShip">
-              <img class="boom-img" *ngIf="square.isClicked; else shipNotClicked" src="./assets/Boom-PNG-File.png"
-                alt="boom icon">
-              <ng-template #shipNotClicked>
-                <img class="ship-img" src="./assets/submarine_3d.png" alt="ship icon">
+            <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isClicked">
+              <img class="ship-img" *ngIf="square.shipSize <= 2; else largeShip"
+                [ngClass]="square.shipSize === 1 ? 'small': 'medium'" [style.width]=" 95 * (square.shipSize) + '%'"
+                src="./assets/{{square.shipSize === 1 ? 'xs_submarine.png' :'small_submarine.svg'}}" alt="ship icon">
+
+              <ng-template #largeShip>
+                <img class="ship-img" [style.width]="100 * (square.shipSize) + '%'"
+                  src="./assets/{{square.shipSize <= 5 ? 'medium' : 'large'}}_submarine.svg" alt="ship icon">
               </ng-template>
             </ng-container>
 
+            <img class="boom-img" *ngIf="gameState === 0 && square.isShip && square.isClicked;" src="./assets/boom.png"
+              alt="boom icon">
           </button>
         </td>
       </ng-container>
