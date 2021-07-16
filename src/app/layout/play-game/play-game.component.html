@@ -5,7 +5,3 @@
 <main>
     <app-game-board [gameState]="gameState" (gameStateChanged)="gameStateChanged($event)"></app-game-board>
 </main>
-
-<footer>
-    <button class="new-game-btn" *ngIf="gameState !== 0" (click)="newGame()">New Game</button>
-</footer>

@@ -15,30 +15,3 @@ header {
         }
     }
 }
-
-footer {
-    margin: 30px;
-
-    .new-game-btn {
-        display: block;
-        margin: auto;
-        padding: 10px 15px;
-        font-family: $font-primary;
-        font-weight: 900;
-        font-size: 20px;
-        cursor: pointer;
-        background-color: rgba(floralwhite, 0.8);
-        border: none;
-        border-radius: 6px;
-        transition: all .2s;
-        color: $color-primary;
-        border: 2px solid transparent;
-
-        &:hover {
-            background-color: rgba($color-primary, 0.8);
-            color: whitesmoke;
-            transform: scale(1.1);
-            border: 2px solid whitesmoke;
-        }
-    }
-}

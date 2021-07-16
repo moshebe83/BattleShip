@@ -1,4 +1,4 @@
-<div class="state-msg" *ngIf="gameStateMsg">
+<div class="state-msg" *ngIf="gameStateMsg" aria-live="assertive">
   {{ gameStateMsg }}
 </div>
 
@@ -19,9 +19,17 @@
         <td *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square">
 
           <button (click)="squareClicked(squareI)" [disabled]="gameState !== 0" class="game-board-row-square-btn"
-            [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [id]="squareI">
-            <img class="ship-img" *ngIf="square.isShip" src="./assets/submarine_3d.png" alt="ship">
-            <img class="boom-img" *ngIf="square.isShip && square.isClicked" src="./assets/Boom-PNG-File.png" alt="boom">
+            [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [id]="squareI"
+            [attr.aria-disabled]="square.isClicked">
+
+            <ng-container *ngIf="gameState === 0 && square.isShip">
+              <img class="boom-img" *ngIf="square.isClicked; else shipNotClicked" src="./assets/Boom-PNG-File.png"
+                alt="boom icon">
+              <ng-template #shipNotClicked>
+                <img class="ship-img" src="./assets/submarine_3d.png" alt="ship icon">
+              </ng-template>
+            </ng-container>
+
           </button>
         </td>
       </ng-container>
