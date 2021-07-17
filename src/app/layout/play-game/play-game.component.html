@@ -2,6 +2,9 @@
     <h1 class="heading">BattleShip</h1>
 </header>
 
+<button (click)="changeLevel()">Change Level</button>
+
 <main>
-    <app-game-board [gameState]="gameState" (gameStateChanged)="gameStateChanged($event)"></app-game-board>
+    <app-game-board [gameState]="gameState" [data]="gameLevelsData[gameLevel]"
+        (gameStateChanged)="gameStateChanged($event)"></app-game-board>
 </main>

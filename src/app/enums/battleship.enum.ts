@@ -3,3 +3,9 @@ export enum EGameState {
     PLAYING = 0,
     LOST = -1,
 }
+
+export enum EGameLevel {
+    EASY = 1,
+    MEDIUM = 2,
+    HARD = 3,
+}

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { EGameState } from 'src/app/enums/battleship.enum';
+import { IGameLevelData } from 'src/app/layout/play-game/play-game.interface';
 import { ISquareItem } from './game-board.interface';
 
 @Component({
@@ -10,24 +11,32 @@ import { ISquareItem } from './game-board.interface';
 })
 
 export class GameBoardComponent implements OnInit {
-
-  private amountOfSquares: number = 0;
-  private amountOfShips: number = 10;
-  private strikesCounter: number = 0;
-  private _gameState: EGameState = EGameState.PLAYING;
-
-  public progressCounter: number = 0;
-  public boardSquaresArr: ISquareItem[] = [];
-  public amountOfRows: number = 10;
-  public squaresPerRow: number = 10;
-  public xAxisLabels: string[] = [];
-  public yAxisLabels: number[] = [];
-  public gameStateMsg: string = '';
-
+  private amountOfSquares: number;
+  private amountOfShips: number;
+  private strikesCounter: number;
+  
+  public progressCounter: number;
+  public boardSquaresArr: ISquareItem[];
+  public amountOfRows: number;
+  public squaresPerRow: number;
+  public xAxisLabels: string[];
+  public yAxisLabels: number[];
+  public gameStateMsg: string;
+  
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
-
+  
+  @Input()
+  get data(): IGameLevelData { return this._data };
+  private _data: IGameLevelData;
+  set data(currentGameData: IGameLevelData) {
+    this._data = currentGameData;
+    this.setGameLevel();
+    this.startNewGame();
+  };
+  
   @Input()
   get gameState(): EGameState { return this._gameState };
+  private _gameState: EGameState;
   set gameState(gameState: EGameState) {
     this._gameState = gameState;
     if (this.strikesCounter === this.amountOfShips && gameState === EGameState.PLAYING) {
@@ -35,15 +44,41 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor() {
+    this.amountOfShips = 0;
+    this.strikesCounter = 0;
+    this.progressCounter = 0;
+    this.amountOfRows = 0;
+    this.squaresPerRow = 0;
+    this.amountOfSquares = 0;
+    
+    this._gameState = EGameState.PLAYING;
+    this._data = {} as IGameLevelData;
+
+    this.boardSquaresArr = [];
+    this.xAxisLabels = [];
+    this.yAxisLabels = [];
+
+    this.gameStateMsg = '';
+   }
 
   ngOnInit(): void {
-    this.amountOfSquares = this.amountOfRows * this.squaresPerRow;
-    this.createAxiesLabels();
+    this.setGameLevel();
     this.startNewGame();
   }
 
+  private setGameLevel() {
+    this.amountOfShips = this.data.amountOfShips;
+    this.amountOfRows = this.data.amountOfRows;
+    this.squaresPerRow = this.data.squaresPerRow;
+    this.amountOfSquares = this.amountOfRows * this.squaresPerRow;
+    this.createAxiesLabels();
+  }
+
   private createAxiesLabels() {
+    this.xAxisLabels = [];
+    this.yAxisLabels = [];
+
     for (let i = 1; i <= this.squaresPerRow; i++) {
       this.xAxisLabels.push((i + 9).toString(36).toUpperCase());
     }
