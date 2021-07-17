@@ -15,3 +15,34 @@ header {
         }
     }
 }
+
+nav {
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+
+    .change-level-btn {
+        padding: 10px 15px;
+        font-family: $font-primary;
+        font-weight: 900;
+        font-size: 20px;
+        background-color: rgba(floralwhite, 0.8);
+        border: none;
+        transition: all 0.2s;
+        color: $color-primary;
+        border: 2px solid transparent;
+        
+        &:disabled {
+            opacity: 0.5;
+        }
+        
+        &:not(:disabled):hover {
+            cursor: pointer;
+            z-index: 1;
+            background-color: rgba($color-primary, 0.8);
+            color: whitesmoke;
+            transform: scale(1.1);
+            border: 2px solid whitesmoke;
+        }
+    }
+}

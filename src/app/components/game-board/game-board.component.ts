@@ -14,7 +14,8 @@ export class GameBoardComponent implements OnInit {
   private amountOfSquares: number;
   private amountOfShips: number;
   private strikesCounter: number;
-  
+  private largestShipImg: number;
+
   public progressCounter: number;
   public boardSquaresArr: ISquareItem[];
   public amountOfRows: number;
@@ -22,9 +23,9 @@ export class GameBoardComponent implements OnInit {
   public xAxisLabels: string[];
   public yAxisLabels: number[];
   public gameStateMsg: string;
-  
+
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
-  
+
   @Input()
   get data(): IGameLevelData { return this._data };
   private _data: IGameLevelData;
@@ -33,7 +34,7 @@ export class GameBoardComponent implements OnInit {
     this.setGameLevel();
     this.startNewGame();
   };
-  
+
   @Input()
   get gameState(): EGameState { return this._gameState };
   private _gameState: EGameState;
@@ -51,7 +52,8 @@ export class GameBoardComponent implements OnInit {
     this.amountOfRows = 0;
     this.squaresPerRow = 0;
     this.amountOfSquares = 0;
-    
+    this.largestShipImg = 7;
+
     this._gameState = EGameState.PLAYING;
     this._data = {} as IGameLevelData;
 
@@ -60,7 +62,7 @@ export class GameBoardComponent implements OnInit {
     this.yAxisLabels = [];
 
     this.gameStateMsg = '';
-   }
+  }
 
   ngOnInit(): void {
     this.setGameLevel();
@@ -97,7 +99,7 @@ export class GameBoardComponent implements OnInit {
 
   private spreadShips(): void {
     for (let i = 0; i < this.amountOfShips; i++) {
-      let randomShipSize: number = Math.floor(Math.random() * (this.squaresPerRow - 3)) + 1;
+      let randomShipSize: number = Math.floor(Math.random() * this.largestShipImg) + 1;
       let randomSquareI: number = Math.floor(Math.random() * this.amountOfSquares);
 
       while (this.boardSquaresArr[randomSquareI].isShip) {
@@ -151,7 +153,7 @@ export class GameBoardComponent implements OnInit {
     if (isShip) {
       let currentShip = this.boardSquaresArr.filter(({ shipId }) => shipId === clickedShipId);
       if (currentShip.every(square => square.isClicked)) {
-        currentShip.map(square => square.isShipDestroyed = true);
+        currentShip.map(square => square.isShipSunk = true);
         this.strikesCounter++;
       }
     }

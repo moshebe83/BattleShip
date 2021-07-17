@@ -10,28 +10,35 @@ import { IGameLevelsList } from './play-game.interface';
 })
 
 export class PlayGameComponent implements OnInit {
-  public gameState: EGameState = EGameState.PLAYING;
-  public gameLevel: EGameLevel = EGameLevel.HARD;
+  public gameState: EGameState;
+  public gameLevel: EGameLevel;
+  public gameLevelsData: IGameLevelsList;
 
-  public gameLevelsData: IGameLevelsList = {
-    1: {
-      amountOfShips: 6,
-      amountOfRows: 6,
-      squaresPerRow: 6
-    },
-    2: {
-      amountOfShips: 9,
-      amountOfRows: 9,
-      squaresPerRow: 9,
-    },
-    3: {
-      amountOfShips: 12,
-      amountOfRows: 12,
-      squaresPerRow: 12,
-    },
+  constructor() {
+    this.gameState = EGameState.PLAYING;
+    this.gameLevel = EGameLevel.HARD;
+
+    this.gameLevelsData = {
+      1: {
+        label: 'Easy',
+        amountOfShips: 6,
+        amountOfRows: 5,
+        squaresPerRow: 5
+      },
+      2: {
+        label: 'Medium',
+        amountOfShips: 10,
+        amountOfRows: 13,
+        squaresPerRow: 9,
+      },
+      3: {
+        label: 'Hard',
+        amountOfShips: 15,
+        amountOfRows: 12,
+        squaresPerRow: 20,
+      },
+    }
   }
-
-  constructor() { }
 
   ngOnInit(): void {
   }
@@ -43,22 +50,10 @@ export class PlayGameComponent implements OnInit {
   public newGame() {
     this.gameState = EGameState.PLAYING;
   }
-
-  public changeLevel() {
-    switch (this.gameLevel) {
-      case EGameLevel.EASY:
-        this.gameLevel = EGameLevel.MEDIUM;
-        break;
-      case EGameLevel.MEDIUM:
-        this.gameLevel = EGameLevel.HARD;
-        break;
-      case EGameLevel.HARD:
-        this.gameLevel = EGameLevel.EASY;
-        break;
-      default:
-        this.gameLevel = EGameLevel.EASY;
-        break;
-    }
+  
+  public changeLevel(newGameLevel: string) {
+    this.gameLevel = +newGameLevel;
+    this.gameState = EGameState.PLAYING;
   }
 
 }
