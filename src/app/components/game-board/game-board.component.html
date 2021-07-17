@@ -19,11 +19,12 @@
       <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
         <td *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square">
 
-          <button (click)="!square.isClicked && squareClicked(squareI, square.shipId)" [disabled]="gameState !== 0"
-            class="game-board-row-square-btn" [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}"
-            [attr.aria-disabled]="square.isClicked" [attr.aria-label]="{'ship' : square.isShip &&  square.isClicked}">
+          <button (click)="!square.isClicked && squareClicked(squareI, square.isShip, square.shipId)"
+            [disabled]="gameState !== 0" class="game-board-row-square-btn"
+            [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [attr.aria-disabled]="square.isClicked"
+            [attr.aria-label]="{'ship' : square.isShip &&  square.isClicked}">
 
-            <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isClicked">
+            <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipDestroyed">
               <img class="ship-img" *ngIf="square.shipSize <= 2; else largeShip"
                 [ngClass]="square.shipSize === 1 ? 'small': 'medium'" [style.width]=" 95 * (square.shipSize) + '%'"
                 src="./assets/{{square.shipSize === 1 ? 'xs_submarine.png' :'small_submarine.svg'}}" alt="ship icon">

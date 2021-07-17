@@ -4,4 +4,5 @@ export interface ISquareItem {
     shipId: number,
     shipSize: number,
     isFirstSquareOfShip?: boolean,
+    isShipDestroyed?: boolean,
 }

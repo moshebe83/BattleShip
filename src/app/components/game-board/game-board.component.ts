@@ -144,14 +144,16 @@ export class GameBoardComponent implements OnInit {
     return new Array(length);
   }
 
-  public squareClicked(squareIndex: number, shipId: number): void {
+  public squareClicked(squareIndex: number, isShip: boolean, clickedShipId: number): void {
     this.progressCounter++;
+    this.boardSquaresArr[squareIndex].isClicked = true;
 
-    if (shipId === -1) {
-      this.boardSquaresArr[squareIndex].isClicked = true;
-    } else {
-      this.boardSquaresArr.map(square => square.shipId === shipId && (square.isClicked = true));
-      this.strikesCounter++;
+    if (isShip) {
+      let currentShip = this.boardSquaresArr.filter(({ shipId }) => shipId === clickedShipId);
+      if (currentShip.every(square => square.isClicked)) {
+        currentShip.map(square => square.isShipDestroyed = true);
+        this.strikesCounter++;
+      }
     }
 
     if (this.strikesCounter === this.amountOfShips) {
