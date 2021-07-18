@@ -4,5 +4,16 @@ export interface ISquareItem {
     shipId: number,
     shipSize: number,
     isFirstSquareOfShip?: boolean,
-    isShipDestroyed?: boolean,
+    isShipSunk?: boolean,
+}
+
+export interface IAxes {
+    x: string[],
+    y: number[],
+}
+
+export interface IState {
+    strikesCounter: number,
+    progressCounter: number,
+    msg?: string,
 }

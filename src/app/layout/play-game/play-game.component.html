@@ -3,5 +3,7 @@
 </header>
 
 <main>
-    <app-game-board [gameState]="gameState" (gameStateChanged)="gameStateChanged($event)"></app-game-board>
+    <app-game-board [gameState]="gameState" [data]="gameLevelsData" [stateMsgs]="stateMsgs"
+        (gameStateChanged)="gameStateChanged($event)">
+    </app-game-board>
 </main>

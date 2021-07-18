@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export class MatrixPipe implements PipeTransform {
 
-  transform(squareIndex: number, rowIndex: number, squaresPerRow: number): unknown {
+  transform(squareIndex: number, rowIndex: number, squaresPerRow: number): boolean {
     let rowFirstSquare = squareIndex + 1 > rowIndex * squaresPerRow;
     let rowLastSquare = squareIndex < (rowIndex + 1) * squaresPerRow;
 

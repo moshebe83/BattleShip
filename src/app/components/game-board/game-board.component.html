@@ -1,5 +1,6 @@
-<div class="state-msg" *ngIf="gameStateMsg" aria-live="assertive">
-  {{ gameStateMsg }}
+<div class="state-msg" *ngIf="state.msg" role="dialog" aria-labelledby="state-msg-text">
+  <h2 id="state-msg-text">{{ state.msg }}</h2>
+  <button class="state-msg-btn" *ngIf="state.msg === stateMsgs.winF" (click)="switchGender()">I'm a boy 🙄</button>
 </div>
 
 
@@ -7,24 +8,24 @@
   <thead>
     <tr>
       <td></td>
-      <th *ngFor="let label of xAxisLabels" class="game-board-axises">{{label}}</th>
+      <th *ngFor="let label of axesLabels.x" class="game-board-axes">{{label}}</th>
     </tr>
   </thead>
 
 
   <tbody>
-    <tr class="game-board-row" *ngFor="let row of counter(amountOfRows); trackBy: trackByFn; index as rowI">
-      <th class="game-board-axises">{{yAxisLabels[rowI]}}</th>
+    <tr class="game-board-row" *ngFor="let row of counter(data.amountOfRows); trackBy: trackByFn; index as rowI">
+      <th class="game-board-axes">{{axesLabels.y[rowI]}}</th>
 
       <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
-        <td *ngIf="squareI | matrixPipe : rowI : squaresPerRow" class="game-board-row-square">
+        <td *ngIf="squareI | matrixPipe : rowI : data.squaresPerRow" class="game-board-row-square">
 
           <button (click)="!square.isClicked && squareClicked(squareI, square.isShip, square.shipId)"
             [disabled]="gameState !== 0" class="game-board-row-square-btn"
             [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [attr.aria-disabled]="square.isClicked"
-            [attr.aria-label]="{'ship' : square.isShip &&  square.isClicked}">
+            [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''">
 
-            <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipDestroyed">
+            <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipSunk">
               <img class="ship-img" *ngIf="square.shipSize <= 2; else largeShip"
                 [ngClass]="square.shipSize === 1 ? 'small': 'medium'" [style.width]=" 95 * (square.shipSize) + '%'"
                 src="./assets/{{square.shipSize === 1 ? 'xs_submarine.png' :'small_submarine.svg'}}" alt="ship icon">
