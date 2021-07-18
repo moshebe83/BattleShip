@@ -10,7 +10,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 70px;
     z-index: 1;
     width: 650px;    
     max-width: 90%;
@@ -18,6 +17,12 @@
     background-color: rgba(antiquewhite, 0.8);
     padding: 20px;
     box-sizing: border-box;
+    
+    &-text {
+        margin: 0;
+        font-size: 70px;
+        font-weight: inherit;
+    }
 
     &-btn {
         display: block;

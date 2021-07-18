@@ -1,5 +1,5 @@
 <div class="state-msg" *ngIf="state.msg" role="dialog" aria-labelledby="state-msg-text">
-  <h2 id="state-msg-text">{{ state.msg }}</h2>
+  <h2 id="state-msg-text" class="state-msg-text">{{ state.msg }}</h2>
   <button class="state-msg-btn" *ngIf="state.msg === stateMsgs.winF" (click)="switchGender()">I'm a boy 🙄</button>
 </div>
 
@@ -27,11 +27,11 @@
 
             <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipSunk">
               <img class="ship-img" *ngIf="square.shipSize <= 2; else largeShip"
-                [ngClass]="square.shipSize === 1 ? 'small': 'medium'" [style.width]=" 95 * (square.shipSize) + '%'"
+                [ngClass]="square.shipSize === 1 ? 'small': 'medium'" [style.width]=" 95 * square.shipSize + '%'"
                 src="./assets/{{square.shipSize === 1 ? 'xs_submarine.png' :'small_submarine.svg'}}" alt="ship icon">
 
               <ng-template #largeShip>
-                <img class="ship-img" [style.width]="100 * (square.shipSize) + '%'"
+                <img class="ship-img" [style.width]="100 * square.shipSize + '%'"
                   src="./assets/{{square.shipSize <= 5 ? 'medium' : 'large'}}_submarine.svg" alt="ship icon">
               </ng-template>
             </ng-container>
