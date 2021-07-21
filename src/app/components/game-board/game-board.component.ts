@@ -11,7 +11,7 @@ import { IAxes, ISquareItem, IState } from './game-board.interface';
 })
 
 export class GameBoardComponent implements OnInit {
-  private largestShipImg: number;
+  private largestShipImgSize: number;
   private _gameState: EGameState;
 
   public state: IState;
@@ -33,7 +33,7 @@ export class GameBoardComponent implements OnInit {
   }
 
   constructor() {
-    this.largestShipImg = 7;
+    this.largestShipImgSize = 7;
     this.boardSquaresArr = [];
 
     this._gameState = EGameState.PLAYING;
@@ -75,7 +75,7 @@ export class GameBoardComponent implements OnInit {
 
   private spreadShips(): void {
     for (let i = 0; i < this.data.amountOfShips; i++) {
-      let randomShipSize: number = Math.floor(Math.random() * this.largestShipImg) + 1;
+      let randomShipSize: number = Math.floor(Math.random() * this.largestShipImgSize) + 1;
       let randomSquareI: number = Math.floor(Math.random() * this.data.amountOfSquares);
 
       while (this.boardSquaresArr[randomSquareI].isShip) {
@@ -134,11 +134,8 @@ export class GameBoardComponent implements OnInit {
 
     if (this.state.strikesCounter === this.data.amountOfShips) {
       this.gameStateChanged.emit(EGameState.WON);
-      this.state.msg = this.stateMsgs.winF;
+      this.state.msg = this.stateMsgs.win;
     }
   }
 
-  public switchGender() {
-    this.state.msg = this.stateMsgs.winM;
-  }
 }

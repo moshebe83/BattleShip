@@ -26,8 +26,7 @@ export class PlayGameComponent implements OnInit {
     }
 
     this.stateMsgs = {
-      winF: "You Go Girl!",
-      winM: "You're The Man 👨",
+      win: "You Go Girl!",
     }
   }
 
