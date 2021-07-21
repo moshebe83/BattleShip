@@ -9,6 +9,5 @@ export interface IGameLevelData {
 }
 
 export interface IStateMsgs {
-    winF: string,
-    winM: string,
+    win: string,
 }
