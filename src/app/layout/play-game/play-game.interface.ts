@@ -7,7 +7,3 @@ export interface IGameLevelData {
     squaresPerRow: number,
     amountOfSquares: number,
 }
-
-export interface IStateMsgs {
-    win: string,
-}

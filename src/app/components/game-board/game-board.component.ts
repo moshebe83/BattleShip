@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { EGameState } from 'src/app/enums/battleship.enum';
-import { IGameLevelData, IStateMsgs } from 'src/app/layout/play-game/play-game.interface';
+import { IGameLevelData } from 'src/app/layout/play-game/play-game.interface';
 import { IAxes, IShipsAmountsList, ISquareItem, IState } from './game-board.interface';
 
 @Component({
@@ -22,7 +22,6 @@ export class GameBoardComponent implements OnInit {
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
 
   @Input() data: IGameLevelData;
-  @Input() stateMsgs: IStateMsgs;
 
   @Input()
   get gameState(): EGameState { return this._gameState };
@@ -42,7 +41,6 @@ export class GameBoardComponent implements OnInit {
     this.data = {} as IGameLevelData;
     this.axesLabels = {} as IAxes;
     this.state = {} as IState;
-    this.stateMsgs = {} as IStateMsgs;
   }
 
   ngOnInit(): void {
@@ -150,7 +148,6 @@ export class GameBoardComponent implements OnInit {
 
     if (this.state.strikesCounter === this.data.amountOfShips) {
       this.gameStateChanged.emit(EGameState.WON);
-      this.state.msg = this.stateMsgs.win;
     }
   }
 
