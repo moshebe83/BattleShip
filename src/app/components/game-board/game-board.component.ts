@@ -73,7 +73,7 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private createdShipsAmountsList(): void {
+  private createShipsAmountsList(): void {
     this.shipsAmountsList = []
 
     for (let i = 0; i <= this.largestShipImgSize; i++) {
@@ -117,7 +117,7 @@ export class GameBoardComponent implements OnInit {
   private startNewGame(): void {
     this.state = { progressCounter: 0, strikesCounter: 0 };
     this.createBoardSquares();
-    this.createdShipsAmountsList();
+    this.createShipsAmountsList();
     this.spreadShips();
   }
 
