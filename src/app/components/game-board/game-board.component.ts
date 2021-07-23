@@ -73,14 +73,12 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private countShips(): void {
+  private createdShipsAmountsList(): void {
     this.shipsAmountsList = []
 
     for (let i = 0; i <= this.largestShipImgSize; i++) {
-      this.shipsAmountsList.push({ onBoard: 0, sunk: 0 })
+      this.shipsAmountsList.push({ onBoard: 0, sunk: 0 });
     }
-
-    console.log(this.shipsAmountsList);
   }
 
   private spreadShips(): void {
@@ -119,7 +117,7 @@ export class GameBoardComponent implements OnInit {
   private startNewGame(): void {
     this.state = { progressCounter: 0, strikesCounter: 0 };
     this.createBoardSquares();
-    this.countShips();
+    this.createdShipsAmountsList();
     this.spreadShips();
   }
 
