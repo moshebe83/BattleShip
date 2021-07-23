@@ -11,7 +11,6 @@
     </tr>
   </thead>
 
-
   <tbody>
     <tr class="game-board-row" *ngFor="let row of counter(data.amountOfRows); trackBy: trackByFn; index as rowI">
       <th class="game-board-axes">{{axesLabels.y[rowI]}}</th>
@@ -19,7 +18,7 @@
       <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
         <td *ngIf="squareI | matrixPipe : rowI : data.squaresPerRow" class="game-board-row-square">
 
-          <button (click)="!square.isClicked && squareClicked(squareI, square.isShip, square.shipId)"
+          <button (click)="!square.isClicked && squareClicked(squareI, square.shipId, square.shipSize)"
             [disabled]="gameState !== 0" class="game-board-row-square-btn"
             [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [attr.aria-disabled]="square.isClicked"
             [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''">
@@ -44,3 +43,30 @@
     </tr>
   </tbody>
 </table>
+
+
+<div class="progress-board">
+  <table class="progress-board-table">
+    <thead class="progress-board-table-head">
+      <tr>
+        <th></th>
+        <th class="progress-board-table-header">Ships State</th>
+        <th></th>
+      </tr>
+      <tr>
+        <th>Size</th>
+        <th>Amount</th>
+        <th>Sunk</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let ship of shipsAmountsList; index as shipSize">
+        <tr *ngIf="ship.onBoard" [ngClass]="{'line-through': ship.onBoard === ship.sunk}">
+          <td>{{shipSize}}</td>
+          <td>{{ship.onBoard}}</td>
+          <td>{{ship.sunk}}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

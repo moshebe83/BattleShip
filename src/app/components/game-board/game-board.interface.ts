@@ -17,3 +17,8 @@ export interface IState {
     progressCounter: number,
     msg?: string,
 }
+
+export interface IShipsAmountsList {
+    onBoard: number,
+    sunk: number
+}
