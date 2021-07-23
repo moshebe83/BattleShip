@@ -19,31 +19,6 @@
     border-radius: 30px;
     padding: 5px;
     box-sizing: border-box;
-
-    &-text {
-        margin: 0;
-        font-size: 70px;
-        font-weight: inherit;
-    }
-
-    &-btn {
-        display: block;
-        margin: auto;
-        padding: 10px 15px;
-        font-family: $font-primary;
-        font-weight: 500;
-        font-size: 18x;
-        color: antiquewhite;
-        background-color: $color-blue;
-        transition: all 0.2s;
-        border: none;
-        text-transform: uppercase;
-        cursor: pointer;
-
-        &:hover {
-            transform: scale(1.1);
-        }
-    }
 }
 
 .game-board {
