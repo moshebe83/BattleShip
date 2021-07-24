@@ -23,16 +23,10 @@
             [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [attr.aria-disabled]="square.isClicked"
             [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''">
 
-            <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipSunk">
-              <img class="ship-img" *ngIf="square.shipSize <= 2; else largeShip"
-                [ngClass]="square.shipSize === 1 ? 'small': 'medium'" [style.width]=" 95 * square.shipSize + '%'"
-                src="./assets/{{square.shipSize === 1 ? 'xs_submarine.png' :'small_submarine.svg'}}" alt="ship icon">
-
-              <ng-template #largeShip>
-                <img class="ship-img" [style.width]="100 * square.shipSize + '%'"
-                  src="./assets/{{square.shipSize <= 5 ? 'medium' : 'large'}}_submarine.svg" alt="ship icon">
-              </ng-template>
-            </ng-container>
+              <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipSunk">
+                <img class="ship-img" [style.width]="100 * square.shipSize + '%'" [src]="square.shipSize | getIcon"
+                  [ngClass]="{'xs' : square.shipSize === 1, 'small' : square.shipSize === 2}" alt="ship icon">
+              </ng-container>
 
             <img class="boom-img" *ngIf="gameState === 0 && square.isShip && square.isClicked;" src="./assets/boom.png"
               alt="boom icon">
@@ -47,7 +41,7 @@
 
 <div class="progress-board">
   <table class="progress-board-table">
-    <thead class="progress-board-table-head">
+    <thead>
       <tr>
         <th></th>
         <th class="progress-board-table-header">Ships State</th>

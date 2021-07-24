@@ -15,8 +15,8 @@ export class GameBoardComponent implements OnInit {
   private _gameState: EGameState;
 
   public state: IState;
-  public boardSquaresArr: ISquareItem[];
   public axesLabels: IAxes;
+  public boardSquaresArr: ISquareItem[];
   public shipsAmountsList: IShipsAmountsList[];
 
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
@@ -97,8 +97,10 @@ export class GameBoardComponent implements OnInit {
       let currentShipSize: number = 0;
 
       for (let j = 0;
-        j < randomShipSize && randomSquareI + j < this.data.amountOfSquares &&
-        !this.boardSquaresArr[randomSquareI + j].isShip && (j === 0 || (randomSquareI + j) % this.data.squaresPerRow !== 0);
+        j < randomShipSize && 
+        randomSquareI + j < this.data.amountOfSquares &&
+        !this.boardSquaresArr[randomSquareI + j].isShip && 
+        (j === 0 || (randomSquareI + j) % this.data.squaresPerRow !== 0);
         j++
       ) {
         this.boardSquaresArr[randomSquareI + j] = {

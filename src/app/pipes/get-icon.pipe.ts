@@ -7,26 +7,26 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class GetIconPipe implements PipeTransform {
 
   transform(shipSize: number): string {
-    let iconName: string = '';
+    let iconSrc: string = './assets/';
 
     switch (shipSize) {
       case 1:
-        iconName = 'xs_submarine.png'
+        iconSrc += 'xs_submarine.png'
         break;
       case 2:
-        iconName = 'small_submarine.svg'
+        iconSrc += 'small_submarine.svg'
         break;
-      case 3 || 4 || 5:
-        iconName = 'medium_submarine.svg'
+      case 3: case 4: case 5:
+        iconSrc += 'medium_submarine.svg'
         break;
-      case 6 || 7 || 8:
-        iconName = 'large_submarine.svg'
+      case 6: case 7: case 8:
+        iconSrc += 'large_submarine.svg'
         break;
       default:
         break;
     }
 
-    return "./assets/" + iconName;
+    return iconSrc;
   }
 
 }

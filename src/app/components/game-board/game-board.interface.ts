@@ -15,7 +15,6 @@ export interface IAxes {
 export interface IState {
     strikesCounter: number,
     progressCounter: number,
-    msg?: string,
 }
 
 export interface IShipsAmountsList {

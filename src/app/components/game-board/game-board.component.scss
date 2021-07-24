@@ -105,17 +105,20 @@
                     z-index: 1;
                     position: absolute;
                     pointer-events: none;
-                    &.small {
+                    &.xs {
                         top: 50%;
                         left: 50%;
                         transform: translate(-50%, -50%);
                     }
-                    &:not(.small) {
+                    &:not(.xs) {
                         height: 100%;
                         left: 5px;
                         top: 0;
                     }
-                    &:not(.medium) {
+                    &.small {
+                        left: 2px;
+                    }
+                    &:not(.small) {
                         filter: brightness(2) contrast(2);
                     }
                 }
@@ -158,7 +161,7 @@
         text-decoration: line-through red;
     }
 
-    @media screen and (max-width: 1100px) {
+    @media screen and (max-width: 1000px) {
         position: relative;
         right: 0;
         margin: 20px 13px;
