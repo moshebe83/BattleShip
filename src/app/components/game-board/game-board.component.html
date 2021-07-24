@@ -1,42 +1,44 @@
-<div class="state-msg" *ngIf="state.msg" role="dialog" aria-labelledby="state-msg-text">
-  <h2 id="state-msg-text" class="state-msg-text">{{ state.msg }}</h2>
-</div>
+<div class="game-board" [ngClass]="gameState === 0 ? '' : gameState === 1 ? 'won' : 'lost'">
 
+  <div class="state-msg" *ngIf="gameState !== 0" role="dialog" aria-labelledby="state-msg-img">
+    <img id="state-msg-img" *ngIf="gameState === 1" src="./assets/trophy.svg" alt="winner image">
+  </div>
 
-<table class="game-board" [ngClass]="gameState === 0 ? '' : gameState === 1 ? 'won' : 'lost'">
-  <thead>
-    <tr>
-      <td></td>
-      <th *ngFor="let label of axesLabels.x" class="game-board-axes">{{label}}</th>
-    </tr>
-  </thead>
+  <table>
+    <thead>
+      <tr>
+        <td></td>
+        <th *ngFor="let label of axesLabels.x" class="game-board-axes">{{label}}</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    <tr class="game-board-row" *ngFor="let row of counter(data.amountOfRows); trackBy: trackByFn; index as rowI">
-      <th class="game-board-axes">{{axesLabels.y[rowI]}}</th>
+    <tbody>
+      <tr class="game-board-row" *ngFor="let row of counter(data.amountOfRows); trackBy: trackByFn; index as rowI">
+        <th class="game-board-axes">{{axesLabels.y[rowI]}}</th>
 
-      <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
-        <td *ngIf="squareI | matrixPipe : rowI : data.squaresPerRow" class="game-board-row-square">
+        <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
+          <td *ngIf="squareI | matrixPipe : rowI : data.squaresPerRow" class="game-board-row-square">
 
-          <button (click)="!square.isClicked && squareClicked(squareI, square.shipId, square.shipSize)"
-            [disabled]="gameState !== 0" class="game-board-row-square-btn"
-            [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [attr.aria-disabled]="square.isClicked"
-            [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''">
+            <button (click)="!square.isClicked && squareClicked(squareI, square.shipId, square.shipSize)"
+              [disabled]="gameState !== 0" class="game-board-row-square-btn"
+              [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [attr.aria-disabled]="square.isClicked"
+              [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''">
 
               <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipSunk">
                 <img class="ship-img" [style.width]="100 * square.shipSize + '%'" [src]="square.shipSize | getIcon"
                   [ngClass]="{'xs' : square.shipSize === 1, 'small' : square.shipSize === 2}" alt="ship icon">
               </ng-container>
 
-            <img class="boom-img" *ngIf="gameState === 0 && square.isShip && square.isClicked;" src="./assets/boom.png"
-              alt="boom icon">
-          </button>
-        </td>
-      </ng-container>
+              <img class="boom-img" *ngIf="gameState === 0 && square.isShip && square.isClicked;"
+                src="./assets/boom.png" alt="boom icon">
+            </button>
+          </td>
+        </ng-container>
 
-    </tr>
-  </tbody>
-</table>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 
 <div class="progress-board">
@@ -44,7 +46,7 @@
     <thead>
       <tr>
         <th></th>
-        <th class="progress-board-table-header">Ships State</th>
+        <th class="progress-board-table-header">Ships</th>
         <th></th>
       </tr>
       <tr>

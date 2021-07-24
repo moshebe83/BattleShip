@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { EGameState } from 'src/app/enums/battleship.enum';
-import { IGameLevelData, IStateMsgs } from 'src/app/layout/play-game/play-game.interface';
+import { IGameLevelData } from 'src/app/layout/play-game/play-game.interface';
 import { IAxes, IShipsAmountsList, ISquareItem, IState } from './game-board.interface';
 
 @Component({
@@ -22,7 +22,6 @@ export class GameBoardComponent implements OnInit {
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
 
   @Input() data: IGameLevelData;
-  @Input() stateMsgs: IStateMsgs;
 
   @Input()
   get gameState(): EGameState { return this._gameState };
@@ -42,7 +41,6 @@ export class GameBoardComponent implements OnInit {
     this.data = {} as IGameLevelData;
     this.axesLabels = {} as IAxes;
     this.state = {} as IState;
-    this.stateMsgs = {} as IStateMsgs;
   }
 
   ngOnInit(): void {
@@ -75,14 +73,12 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private countShips(): void {
+  private createShipsAmountsList(): void {
     this.shipsAmountsList = []
 
     for (let i = 0; i <= this.largestShipImgSize; i++) {
-      this.shipsAmountsList.push({ onBoard: 0, sunk: 0 })
+      this.shipsAmountsList.push({ onBoard: 0, sunk: 0 });
     }
-
-    console.log(this.shipsAmountsList);
   }
 
   private spreadShips(): void {
@@ -123,7 +119,7 @@ export class GameBoardComponent implements OnInit {
   private startNewGame(): void {
     this.state = { progressCounter: 0, strikesCounter: 0 };
     this.createBoardSquares();
-    this.countShips();
+    this.createShipsAmountsList();
     this.spreadShips();
   }
 
@@ -152,7 +148,6 @@ export class GameBoardComponent implements OnInit {
 
     if (this.state.strikesCounter === this.data.amountOfShips) {
       this.gameStateChanged.emit(EGameState.WON);
-      this.state.msg = this.stateMsgs.win;
     }
   }
 

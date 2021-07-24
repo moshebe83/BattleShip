@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { EGameLevel, EGameState } from 'src/app/enums/battleship.enum';
-import { IGameLevelData, IStateMsgs } from './play-game.interface';
+import { IGameLevelData } from './play-game.interface';
 
 @Component({
   selector: 'app-play-game',
@@ -12,7 +12,6 @@ import { IGameLevelData, IStateMsgs } from './play-game.interface';
 export class PlayGameComponent implements OnInit {
   public gameState: EGameState;
   public gameLevelsData: IGameLevelData;
-  public stateMsgs: IStateMsgs;
 
   constructor() {
     this.gameState = EGameState.PLAYING;
@@ -23,10 +22,6 @@ export class PlayGameComponent implements OnInit {
       amountOfRows: 10,
       squaresPerRow: 10,
       amountOfSquares: 100,
-    }
-
-    this.stateMsgs = {
-      win: "You Go Girl!",
     }
   }
 
