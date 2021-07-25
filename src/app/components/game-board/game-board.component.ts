@@ -83,6 +83,7 @@ export class GameBoardComponent implements OnInit {
 
   private spreadShips(): void {
     for (let i = 0; i < this.data.amountOfShips; i++) {
+      let isVertical: boolean = Boolean(Math.round(Math.random()));
       let randomShipSize: number = Math.floor(Math.random() * this.largestShipImgSize) + 1;
       let randomSquareI: number = Math.floor(Math.random() * this.data.amountOfSquares);
 
@@ -93,21 +94,22 @@ export class GameBoardComponent implements OnInit {
       let currentShipSize: number = 0;
 
       for (let j = 0;
-        j < randomShipSize && 
+        j < (isVertical ? randomShipSize * this.data.squaresPerRow : randomShipSize) &&
         randomSquareI + j < this.data.amountOfSquares &&
-        !this.boardSquaresArr[randomSquareI + j].isShip && 
+        !this.boardSquaresArr[randomSquareI + j].isShip &&
         (j === 0 || (randomSquareI + j) % this.data.squaresPerRow !== 0);
-        j++
+        (isVertical ? j += this.data.squaresPerRow : j++)
       ) {
         this.boardSquaresArr[randomSquareI + j] = {
           isShip: true,
           isClicked: false,
           shipId: i,
           isFirstSquareOfShip: j === 0,
-          shipSize: 1
+          shipSize: 1,
+          isVertical: isVertical
         }
         currentShipSize++;
-      } 
+      }
       this.shipsAmountsList[currentShipSize].onBoard++;
 
       if (currentShipSize > 1) {

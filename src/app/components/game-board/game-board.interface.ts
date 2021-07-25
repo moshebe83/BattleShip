@@ -5,6 +5,7 @@ export interface ISquareItem {
     shipSize: number,
     isFirstSquareOfShip?: boolean,
     isShipSunk?: boolean,
+    isVertical?: boolean,
 }
 
 export interface IAxes {

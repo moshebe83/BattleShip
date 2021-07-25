@@ -95,6 +95,14 @@
                     &:not(.small) {
                         filter: brightness(2) contrast(2);
                     }
+
+                    &.vertical {
+                        height: 80%;
+                        transform: rotate(90deg);
+                        transform-origin: bottom left;
+                        right: 50px;
+                        top: -30px;
+                    }
                 }
 
                 .boom-img {

@@ -25,8 +25,9 @@
               [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''">
 
               <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipSunk">
-                <img class="ship-img" [style.width]="100 * square.shipSize + '%'" [src]="square.shipSize | getIcon"
-                  [ngClass]="{'xs' : square.shipSize === 1, 'small' : square.shipSize === 2}" alt="ship icon">
+                <img class="ship-img" [style.width]="!square.isVertical && 100 * square.shipSize + '%'"
+                  [src]="square.shipSize | getIcon" alt="ship icon"
+                  [ngClass]="{'vertical': square.isVertical, 'xs' : square.shipSize === 1, 'small' : square.shipSize === 2}">
               </ng-container>
 
               <img class="boom-img" *ngIf="gameState === 0 && square.isShip && square.isClicked;"
