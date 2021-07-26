@@ -84,7 +84,9 @@
                         left: 50%;
                         transform: translate(-50%, -50%);
                         &.vertical {
-                            height: 90%;
+                            height: 80%;
+                            left: 5px;
+                            top: -35px;
                         }
                     }
                     &:not(.xs) {
@@ -103,7 +105,7 @@
                         transform: rotate(90deg);
                         transform-origin: bottom left;
                         top: -40px;
-                        left: 5px;
+                        left: 0;
                     }
                 }
 
