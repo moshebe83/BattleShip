@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { EGameState } from 'src/app/enums/battleship.enum';
+
 import { IGameLevelData } from 'src/app/layout/play-game/play-game.interface';
-import { IAxes, IShipsAmountsList, ISquareItem, IState } from './game-board.interface';
+import { IAxes, IShipsAmountsList, ISquareItem } from './game-board.interface';
 
 @Component({
   selector: 'app-game-board',
@@ -13,8 +14,9 @@ import { IAxes, IShipsAmountsList, ISquareItem, IState } from './game-board.inte
 export class GameBoardComponent implements OnInit {
   private largestShipImgSize: number;
   private _gameState: EGameState;
-
-  public state: IState;
+  
+  public rows: void[];
+  public strikesCounter: number;
   public axesLabels: IAxes;
   public boardSquaresArr: ISquareItem[];
   public shipsAmountsList: IShipsAmountsList[];
@@ -27,12 +29,14 @@ export class GameBoardComponent implements OnInit {
   get gameState(): EGameState { return this._gameState };
   set gameState(gameState: EGameState) {
     this._gameState = gameState;
-    if (this.state.strikesCounter === this.data.amountOfShips && gameState === EGameState.PLAYING) {
+    if (this.strikesCounter === this.data.amountOfShips && gameState === EGameState.PLAYING) {
       this.startNewGame();
     }
   }
 
   constructor() {
+    this.rows = [];
+    this.strikesCounter = 0;
     this.largestShipImgSize = 7;
     this.boardSquaresArr = [];
     this.shipsAmountsList = [];
@@ -40,7 +44,6 @@ export class GameBoardComponent implements OnInit {
     this._gameState = EGameState.PLAYING;
     this.data = {} as IGameLevelData;
     this.axesLabels = {} as IAxes;
-    this.state = {} as IState;
   }
 
   ngOnInit(): void {
@@ -48,12 +51,13 @@ export class GameBoardComponent implements OnInit {
     this.startNewGame();
   }
 
-  private setGameLevel() {
+  private setGameLevel(): void {
     this.data.amountOfSquares = this.data.amountOfRows * this.data.squaresPerRow;
+    this.rows = new Array(this.data.amountOfRows);
     this.createAxiesLabels();
   }
 
-  private createAxiesLabels() {
+  private createAxiesLabels(): void {
     this.axesLabels.x = [];
     this.axesLabels.y = [];
 
@@ -68,6 +72,7 @@ export class GameBoardComponent implements OnInit {
 
   private createBoardSquares(): void {
     this.boardSquaresArr = [];
+
     for (let i = 0; i < this.data.amountOfSquares; i++) {
       this.boardSquaresArr.push({ isShip: false, isClicked: false, shipId: -1, shipSize: -1 });
     }
@@ -119,7 +124,7 @@ export class GameBoardComponent implements OnInit {
   }
 
   private startNewGame(): void {
-    this.state = { progressCounter: 0, strikesCounter: 0 };
+    this.strikesCounter = 0;
     this.createBoardSquares();
     this.createShipsAmountsList();
     this.spreadShips();
@@ -131,12 +136,7 @@ export class GameBoardComponent implements OnInit {
     return index;
   }
 
-  public counter(length: number): number[] {
-    return new Array(length);
-  }
-
   public squareClicked(squareIndex: number, clickedShipId: number, shipSize: number): void {
-    this.state.progressCounter++;
     this.boardSquaresArr[squareIndex].isClicked = true;
 
     if (clickedShipId !== -1) {
@@ -144,11 +144,11 @@ export class GameBoardComponent implements OnInit {
       if (currentShip.every(square => square.isClicked)) {
         currentShip.map(square => square.isShipSunk = true);
         this.shipsAmountsList[shipSize].sunk++;
-        this.state.strikesCounter++;
+        this.strikesCounter++;
       }
     }
 
-    if (this.state.strikesCounter === this.data.amountOfShips) {
+    if (this.strikesCounter === this.data.amountOfShips) {
       this.gameStateChanged.emit(EGameState.WON);
     }
   }
