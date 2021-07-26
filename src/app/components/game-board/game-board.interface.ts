@@ -13,11 +13,6 @@ export interface IAxes {
     y: number[],
 }
 
-export interface IState {
-    strikesCounter: number,
-    progressCounter: number,
-}
-
 export interface IShipsAmountsList {
     onBoard: number,
     sunk: number
