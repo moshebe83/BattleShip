@@ -21,12 +21,13 @@
 
             <button (click)="!square.isClicked && squareClicked(squareI, square.shipId, square.shipSize)"
               [disabled]="gameState !== 0" class="game-board-row-square-btn"
-              [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}" [attr.aria-disabled]="square.isClicked"
-              [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''">
+              [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}"
+              [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''"
+              [attr.aria-disabled]="square.isClicked">
 
               <ng-container *ngIf="gameState === 0 && square.isFirstSquareOfShip && !square.isShipSunk">
-                <img class="ship-img" [style.width]="!square.isVertical && 100 * square.shipSize + '%'"
-                  [src]="square.shipSize | getIcon" alt="ship icon"
+                <img class="ship-img" [src]="square.shipSize | getIcon" alt="ship icon"
+                  [style.width]="100 * square.shipSize + '%'"
                   [ngClass]="{'vertical': square.isVertical, 'xs' : square.shipSize === 1, 'small' : square.shipSize === 2}">
               </ng-container>
 
