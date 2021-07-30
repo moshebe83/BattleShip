@@ -12,9 +12,9 @@ import { IAxes, IShipsAmountsList, ISquareItem } from './game-board.interface';
 })
 
 export class GameBoardComponent implements OnInit {
-  private largestShipImgSize: number;
+  private largestShipSize: number;
   private _gameState: EGameState;
-  
+
   public rows: void[];
   public strikesCounter: number;
   public axesLabels: IAxes;
@@ -37,7 +37,7 @@ export class GameBoardComponent implements OnInit {
   constructor() {
     this.rows = [];
     this.strikesCounter = 0;
-    this.largestShipImgSize = 7;
+    this.largestShipSize = 7;
     this.boardSquaresArr = [];
     this.shipsAmountsList = [];
 
@@ -70,7 +70,7 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private createBoardSquares(): void {
+  private createBoardSquaresList(): void {
     this.boardSquaresArr = [];
 
     for (let i = 0; i < this.data.amountOfSquares; i++) {
@@ -81,19 +81,21 @@ export class GameBoardComponent implements OnInit {
   private createShipsAmountsList(): void {
     this.shipsAmountsList = []
 
-    for (let i = 0; i <= this.largestShipImgSize; i++) {
+    for (let i = 0; i <= this.largestShipSize; i++) {
       this.shipsAmountsList.push({ onBoard: 0, sunk: 0 });
     }
   }
 
   private spreadShips(): void {
     for (let i = 0; i < this.data.amountOfShips; i++) {
+      const getRandomSquareIndex = (): number => Math.floor(Math.random() * this.data.amountOfSquares);
+
       let isVertical: boolean = Boolean(Math.round(Math.random()));
-      let randomShipSize: number = Math.floor(Math.random() * this.largestShipImgSize) + 1;
-      let randomSquareI: number = Math.floor(Math.random() * this.data.amountOfSquares);
+      let randomShipSize: number = Math.floor(Math.random() * this.largestShipSize) + 1;
+      let randomSquareI: number = getRandomSquareIndex();
 
       while (this.boardSquaresArr[randomSquareI].isShip) {
-        randomSquareI = Math.floor(Math.random() * this.data.amountOfSquares);
+        randomSquareI = getRandomSquareIndex();
       }
 
       let currentShipSize: number = 0;
@@ -102,8 +104,8 @@ export class GameBoardComponent implements OnInit {
         j < (isVertical ? randomShipSize * this.data.squaresPerRow : randomShipSize) &&
         randomSquareI + j < this.data.amountOfSquares &&
         !this.boardSquaresArr[randomSquareI + j].isShip &&
-        (j === 0 || (randomSquareI + j) % this.data.squaresPerRow !== 0);
-        (isVertical ? j += this.data.squaresPerRow : j++)
+        (j === 0 || (randomSquareI + j) % (isVertical ? this.data.amountOfRows : this.data.squaresPerRow) !== 0);
+        isVertical ? j += this.data.squaresPerRow : j++
       ) {
         this.boardSquaresArr[randomSquareI + j] = {
           isShip: true,
@@ -115,17 +117,19 @@ export class GameBoardComponent implements OnInit {
         }
         currentShipSize++;
       }
+      
       this.shipsAmountsList[currentShipSize].onBoard++;
 
       if (currentShipSize > 1) {
         this.boardSquaresArr.map(square => square.shipId === i && (square.shipSize = currentShipSize));
       }
+
     }
   }
 
   private startNewGame(): void {
     this.strikesCounter = 0;
-    this.createBoardSquares();
+    this.createBoardSquaresList();
     this.createShipsAmountsList();
     this.spreadShips();
   }
