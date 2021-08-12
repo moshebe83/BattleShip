@@ -40,19 +40,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.gameLevelFormGroup.controls.amountOfShips.setValidators(this.customValidator(this.gameLevelFormGroup.value));
-
     this.gameData = this.gameLevels;
   }
-
-  private customValidator(formData: IGameLevelData): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (formData.amountOfShips >= (formData.rows * formData.columns) / 2) {
-        return null;
-      }
-      return { tooManyShips: true };
-    };
-  };
 
   public shipsAmountsChanges(shipsAmountsList: IShipsAmountsList[]): void {
     this.shipsAmountsList = shipsAmountsList;
@@ -63,14 +52,11 @@ export class HomeComponent implements OnInit {
   }
 
   public newGameSubmitted(inputValues?: IGameLevelData): void {
-    console.log(inputValues);
-
     let newGameLevel: IGameLevelData = { ...this.gameLevels, gameLevel: EGameLevel.CUSTOM };
 
     if (inputValues) {
       Object.entries(inputValues).forEach(([key, value]) => {
         if (value) {
-          console.log(value);
           newGameLevel[key as keyof IGameLevelData] = inputValues[key as keyof IGameLevelData];
         }
       });

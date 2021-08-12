@@ -22,7 +22,7 @@ export class GameBoardComponent implements OnInit {
   public axesLabels: IAxes;
   public boardSquaresArr: ISquareItem[];
   public shipsAmountsList: IShipsAmountsList[];
-  public TypeGameState: typeof EGameState;
+  public EGameState: typeof EGameState;
 
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
   @Output() shipsAmountListChanged: EventEmitter<IShipsAmountsList[]> = new EventEmitter<IShipsAmountsList[]>();
@@ -60,7 +60,7 @@ export class GameBoardComponent implements OnInit {
     this._gameData = {} as IGameLevelData;
     this.data = {} as IGameLevelData;
     this.axesLabels = {} as IAxes;
-    this.TypeGameState = EGameState;
+    this.EGameState = EGameState;
   }
 
   ngOnInit(): void {

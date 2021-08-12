@@ -1,7 +1,7 @@
-<div class="game-board" [ngClass]="{'won': gameState === TypeGameState.WON, 'lost': gameState === TypeGameState.LOST}">
+<div class="game-board" [ngClass]="{'won': gameState === EGameState.WON, 'lost': gameState === EGameState.LOST}">
 
-  <div class="state-msg" *ngIf="gameState" role="dialog" aria-labelledby="state-msg-img">
-    <img id="state-msg-img" *ngIf="gameState === TypeGameState.WON" src="./assets/trophy.svg" alt="winner image">
+  <div class="state-msg" *ngIf="gameState !== EGameState.PLAYING" role="dialog" aria-labelledby="state-msg-img">
+    <img id="state-msg-img" *ngIf="gameState === EGameState.WON" src="./assets/trophy.svg" alt="winner image">
   </div>
 
   <table [ngClass]="{'large-board': data.columns > 15}">
@@ -20,19 +20,20 @@
           <td *ngIf="squareI | matrixPipe : rowI : data.columns" class="game-board-row-square">
 
             <button (click)="!square.isClicked && squareClicked(squareI, square.shipId, square.shipSize)"
-              [disabled]="gameState" class="game-board-row-square-btn"
+              [disabled]="gameState !== EGameState.PLAYING" class="game-board-row-square-btn"
               [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}"
               [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''"
               [attr.aria-disabled]="square.isClicked">
 
-              <ng-container *ngIf="!gameState && square.isFirstSquareOfShip && !square.isShipSunk">
+              <ng-container
+                *ngIf="gameState === EGameState.PLAYING && square.isFirstSquareOfShip && !square.isShipSunk">
                 <img class="ship-img" [src]="square.shipSize | getIcon" alt="ship icon"
-                  [style.width]="100 * square.shipSize + '%'"
+                  [style.width]="102 * square.shipSize + '%'"
                   [ngClass]="{'vertical': square.isVertical, 'xs' : square.shipSize === 1, 'small' : square.shipSize === 2}">
               </ng-container>
 
-              <img class="boom-img" *ngIf="!gameState && square.isShip && square.isClicked;" src="./assets/boom.png"
-                alt="boom icon">
+              <img class="boom-img" *ngIf="gameState === EGameState.PLAYING && square.isShip && square.isClicked;"
+                src="./assets/boom.png" alt="boom icon">
             </button>
           </td>
         </ng-container>
