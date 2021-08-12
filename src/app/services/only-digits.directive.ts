@@ -5,16 +5,21 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 })
 
 export class OnlyDigitsDirective {
+  private prevValue: number | undefined;
 
   constructor(private elRef: ElementRef) { }
 
-  @HostListener('input', ['$event']) onInputChange(event: { stopPropagation: () => void; }) {
+  @HostListener('input') onInputChange() {
     const initalValue = this.elRef.nativeElement.value;
-    this.elRef.nativeElement.value = initalValue.replace(/[^1-9]*/g, '');
 
-    if (initalValue !== this.elRef.nativeElement.value) {
-      event.stopPropagation();
+    if (!initalValue) {
+      this.elRef.nativeElement.value = '';
     }
+    else if (initalValue.startsWith(0) || initalValue < 1 || initalValue > 99) {
+      this.elRef.nativeElement.value = this.prevValue;
+    }
+
+    this.prevValue = this.elRef.nativeElement.value;
   }
 
 }
