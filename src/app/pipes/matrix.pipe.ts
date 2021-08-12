@@ -6,9 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export class MatrixPipe implements PipeTransform {
 
-  transform(squareIndex: number, rowIndex: number, squaresPerRow: number): boolean {
-    let rowFirstSquare = squareIndex + 1 > rowIndex * squaresPerRow;
-    let rowLastSquare = squareIndex < (rowIndex + 1) * squaresPerRow;
+  transform(squareIndex: number, rowIndex: number, columns: number): boolean {
+    let rowFirstSquare = squareIndex + 1 > rowIndex * columns;
+    let rowLastSquare = squareIndex < (rowIndex + 1) * columns;
 
     return rowFirstSquare && rowLastSquare;
   }

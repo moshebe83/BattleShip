@@ -1,0 +1,33 @@
+<header>
+    <h1 class="heading">BattleShip</h1>
+</header>
+
+<main>
+    <app-game-board [gameState]="gameState" [data]="gameData" (gameStateChanged)="gameStateChanged($event)"
+        (shipsAmountListChanged)="shipsAmountsChanges($event)">
+    </app-game-board>
+</main>
+
+<div class="side-bars">
+    <app-new-game-form [gameLevelFormGroup]="gameLevelFormGroup" (newGameEmit)="newGameSubmitted($event)">
+    </app-new-game-form>
+
+    <aside class="side-bar progress-board">
+        <table class="progress-board-table">
+            <thead>
+                <tr>
+                    <th class="progress-board-table-headers">Size</th>
+                    <th class="progress-board-table-headers">Sunk</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let ship of shipsAmountsList; index as shipSize">
+                    <tr *ngIf="ship.onBoard" [ngClass]="{'line-through': ship.onBoard === ship.sunk}">
+                        <td>{{shipSize}}</td>
+                        <td>{{ship.sunk}} / {{ship.onBoard}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </aside>
+</div>

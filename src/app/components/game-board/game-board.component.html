@@ -1,10 +1,10 @@
-<div class="game-board" [ngClass]="{'won': gameState === 1, 'lost': gameState === -1}">
+<div class="game-board" [ngClass]="{'won': gameState === TypeGameState.WON, 'lost': gameState === TypeGameState.LOST}">
 
   <div class="state-msg" *ngIf="gameState" role="dialog" aria-labelledby="state-msg-img">
-    <img id="state-msg-img" *ngIf="gameState === 1" src="./assets/trophy.svg" alt="winner image">
+    <img id="state-msg-img" *ngIf="gameState === TypeGameState.WON" src="./assets/trophy.svg" alt="winner image">
   </div>
 
-  <table>
+  <table [ngClass]="{'large-board': data.columns > 15}">
     <thead>
       <tr>
         <td></td>
@@ -17,7 +17,7 @@
         <th class="game-board-axes">{{axesLabels.y[rowI]}}</th>
 
         <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
-          <td *ngIf="squareI | matrixPipe : rowI : data.squaresPerRow" class="game-board-row-square">
+          <td *ngIf="squareI | matrixPipe : rowI : data.columns" class="game-board-row-square">
 
             <button (click)="!square.isClicked && squareClicked(squareI, square.shipId, square.shipSize)"
               [disabled]="gameState" class="game-board-row-square-btn"
@@ -40,31 +40,5 @@
       </tr>
     </tbody>
   </table>
-</div>
 
-
-<div class="progress-board">
-  <table class="progress-board-table">
-    <thead>
-      <tr>
-        <th></th>
-        <th class="progress-board-table-header">Ships</th>
-        <th></th>
-      </tr>
-      <tr>
-        <th>Size</th>
-        <th>Amount</th>
-        <th>Sunk</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let ship of shipsAmountsList; index as shipSize">
-        <tr *ngIf="ship.onBoard" [ngClass]="{'line-through': ship.onBoard === ship.sunk}">
-          <td>{{shipSize}}</td>
-          <td>{{ship.onBoard}}</td>
-          <td>{{ship.sunk}}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
 </div>

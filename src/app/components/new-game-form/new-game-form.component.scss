@@ -1,0 +1,44 @@
+@import "../../../styles.scss";
+
+.new-game-form {
+    left: 30px;
+    flex-direction: column;
+
+    &-input {
+        font-family: inherit;
+        color: floralwhite;
+        text-align: inherit;
+        border: 2px solid transparent;
+        border-bottom: 2px solid floralwhite;
+        background-color: transparent;
+        width: 100px;
+        padding-block: 10px 5px;
+        margin-bottom: 20px;
+        transition: all 0.2s;
+        &:focus {
+            outline: none;
+            border: 2px solid rgba(floralwhite, 0.8);
+            border-radius: 6px;
+        }
+    }
+    &-btn {
+        padding: 8px 12px;
+        font-family: inherit;
+        font-weight: 900;
+        font-size: 18px;
+        cursor: pointer;
+        background-color: rgba(floralwhite, 0.8);
+        border: none;
+        border-radius: 6px;
+        transition: all 0.2s;
+        color: $color-primary;
+        border: 2px solid transparent;
+
+        &:hover {
+            background-color: rgba($color-primary, 0.8);
+            color: whitesmoke;
+            transform: scale(1.1);
+            border: 2px solid whitesmoke;
+        }
+    }
+}

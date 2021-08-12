@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { EGameState } from 'src/app/enums/battleship.enum';
+import { EGameState } from 'src/app/services/battleship.enum';
 
-import { IGameLevelData } from 'src/app/layout/play-game/play-game.interface';
+import { IGameLevelData } from 'src/app/layout/home/home.interface';
 import { IAxes, IShipsAmountsList, ISquareItem } from './game-board.interface';
 
 @Component({
@@ -13,17 +13,31 @@ import { IAxes, IShipsAmountsList, ISquareItem } from './game-board.interface';
 
 export class GameBoardComponent implements OnInit {
   private largestShipSize: number;
+  private largestShipImg: number;
   private _gameState: EGameState;
+  private _gameData: IGameLevelData;
 
   public rows: void[];
   public strikesCounter: number;
   public axesLabels: IAxes;
   public boardSquaresArr: ISquareItem[];
   public shipsAmountsList: IShipsAmountsList[];
+  public TypeGameState: typeof EGameState;
 
   @Output() gameStateChanged: EventEmitter<EGameState> = new EventEmitter<EGameState>();
+  @Output() shipsAmountListChanged: EventEmitter<IShipsAmountsList[]> = new EventEmitter<IShipsAmountsList[]>();
 
-  @Input() data: IGameLevelData;
+  @Input()
+  get data(): IGameLevelData { return this._gameData };
+  set data(gameData: IGameLevelData) {
+    if (Object.keys(this._gameData).length !== 0 && gameData !== this._gameData) {
+      this._gameData = gameData;
+      this.setGameLevel();
+    } else {
+      this._gameData = gameData;
+    }
+    this.startNewGame();
+  }
 
   @Input()
   get gameState(): EGameState { return this._gameState };
@@ -38,12 +52,15 @@ export class GameBoardComponent implements OnInit {
     this.rows = [];
     this.strikesCounter = 0;
     this.largestShipSize = 7;
+    this.largestShipImg = 7;
     this.boardSquaresArr = [];
     this.shipsAmountsList = [];
 
     this._gameState = EGameState.PLAYING;
+    this._gameData = {} as IGameLevelData;
     this.data = {} as IGameLevelData;
     this.axesLabels = {} as IAxes;
+    this.TypeGameState = EGameState;
   }
 
   ngOnInit(): void {
@@ -52,20 +69,26 @@ export class GameBoardComponent implements OnInit {
   }
 
   private setGameLevel(): void {
-    this.data.amountOfSquares = this.data.amountOfRows * this.data.squaresPerRow;
-    this.rows = new Array(this.data.amountOfRows);
+    this.data.amountOfSquares = this.data.rows * this.data.columns;
+    this.rows = new Array(this.data.rows);
     this.createAxiesLabels();
+
+    if (this.largestShipImg < Math.max(this.data.rows, this.data.columns)) {
+      this.largestShipSize = this.largestShipImg;
+    } else {
+      this.largestShipSize = Math.max(this.data.rows, this.data.columns);
+    }
   }
 
   private createAxiesLabels(): void {
     this.axesLabels.x = [];
     this.axesLabels.y = [];
 
-    for (let i = 1; i <= this.data.squaresPerRow; i++) {
+    for (let i = 1; i <= this.data.columns; i++) {
       this.axesLabels.x.push((i + 9).toString(36).toUpperCase());
     }
 
-    for (let i = 1; i <= this.data.amountOfRows; i++) {
+    for (let i = 1; i <= this.data.rows; i++) {
       this.axesLabels.y.push(i);
     }
   }
@@ -81,7 +104,7 @@ export class GameBoardComponent implements OnInit {
   private createShipsAmountsList(): void {
     this.shipsAmountsList = []
 
-    for (let i = 0; i <= this.largestShipSize; i++) {
+    for (let i = 0; i <= this.largestShipImg; i++) {
       this.shipsAmountsList.push({ onBoard: 0, sunk: 0 });
     }
   }
@@ -90,8 +113,8 @@ export class GameBoardComponent implements OnInit {
     for (let i = 0; i < this.data.amountOfShips; i++) {
       const getRandomSquareIndex = (): number => Math.floor(Math.random() * this.data.amountOfSquares);
 
-      let isVertical: boolean = Boolean(Math.round(Math.random()));
-      let randomShipSize: number = Math.floor(Math.random() * this.largestShipSize) + 1;
+      const isVertical: boolean = Boolean(Math.round(Math.random()));
+      const randomShipSize: number = Math.floor(Math.random() * this.largestShipImg) + 1;
       let randomSquareI: number = getRandomSquareIndex();
 
       while (this.boardSquaresArr[randomSquareI].isShip) {
@@ -101,12 +124,14 @@ export class GameBoardComponent implements OnInit {
       let currentShipSize: number = 0;
 
       for (let j = 0;
-        j < (isVertical ? randomShipSize * this.data.squaresPerRow : randomShipSize) &&
-        randomSquareI + j < this.data.amountOfSquares &&
-        !this.boardSquaresArr[randomSquareI + j].isShip &&
-        (j === 0 || (randomSquareI + j) % (isVertical ? this.data.amountOfRows : this.data.squaresPerRow) !== 0);
-        isVertical ? j += this.data.squaresPerRow : j++
+        j < randomShipSize * (isVertical ? this.data.columns : 1);
+        isVertical ? j += this.data.columns : j++
       ) {
+        if (randomSquareI + j >= this.data.amountOfSquares ||
+          this.boardSquaresArr[randomSquareI + j].isShip ||
+          (j !== 0 && (randomSquareI + j) % (isVertical ? this.data.rows : this.data.columns) === 0)
+        ) break;
+
         this.boardSquaresArr[randomSquareI + j] = {
           isShip: true,
           isClicked: false,
@@ -117,7 +142,7 @@ export class GameBoardComponent implements OnInit {
         }
         currentShipSize++;
       }
-      
+
       this.shipsAmountsList[currentShipSize].onBoard++;
 
       if (currentShipSize > 1) {
@@ -125,6 +150,7 @@ export class GameBoardComponent implements OnInit {
       }
 
     }
+    this.shipsAmountListChanged.emit(this.shipsAmountsList);
   }
 
   private startNewGame(): void {
@@ -145,6 +171,7 @@ export class GameBoardComponent implements OnInit {
 
     if (clickedShipId !== -1) {
       let currentShip = this.boardSquaresArr.filter(({ shipId }) => shipId === clickedShipId);
+      
       if (currentShip.every(square => square.isClicked)) {
         currentShip.map(square => square.isShipSunk = true);
         this.shipsAmountsList[shipSize].sunk++;
