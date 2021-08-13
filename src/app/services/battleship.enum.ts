@@ -5,8 +5,8 @@ export enum EGameState {
 } 
 
 export enum EGameLevel {
+    CUSTOM = 0,
     EASY = 1,
     MEDIUM = 2,
     HARD = 3,
-    CUSTOM = 4,
 }

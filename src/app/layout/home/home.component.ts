@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { EGameLevel, EGameState } from 'src/app/services/battleship.enum';
 
 import { IGameLevelData } from './home.interface';
 import { IShipsAmountsList } from 'src/app/components/game-board/game-board.interface';
-import { EGameLevel, EGameState } from 'src/app/services/battleship.enum';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,7 @@ import { EGameLevel, EGameState } from 'src/app/services/battleship.enum';
 })
 
 export class HomeComponent implements OnInit {
+  public maxColumns: number;
   public shipsAmountsList: IShipsAmountsList[];
   public gameState: EGameState;
   public gameData: IGameLevelData;
@@ -19,7 +21,8 @@ export class HomeComponent implements OnInit {
   public gameLevels: IGameLevelData;
   public gameLevelFormGroup: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor() {
+    this.maxColumns = 20;
     this.shipsAmountsList = [];
     this.gameState = EGameState.PLAYING;
     this.gameData = {} as IGameLevelData;
@@ -35,7 +38,7 @@ export class HomeComponent implements OnInit {
     this.gameLevelFormGroup = new FormGroup({
       amountOfShips: new FormControl(),
       rows: new FormControl(),
-      columns: new FormControl(),
+      columns: new FormControl('', Validators.max(this.maxColumns)),
     })
   }
 
@@ -56,9 +59,8 @@ export class HomeComponent implements OnInit {
 
     if (inputValues) {
       Object.entries(inputValues).forEach(([key, value]) => {
-        if (value) {
+        if (value)
           newGameLevel[key as keyof IGameLevelData] = inputValues[key as keyof IGameLevelData];
-        }
       });
 
       if (newGameLevel.amountOfShips < newGameLevel.rows * newGameLevel.columns / 2) {

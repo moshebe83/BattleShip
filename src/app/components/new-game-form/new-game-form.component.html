@@ -1,13 +1,18 @@
 <form [formGroup]="gameLevelFormGroup" (submit)="newGameSubmitted(gameLevelFormGroup)" class="side-bar new-game-form">
     <label for="ships" class="new-game-form-label"> Ships </label>
-    <input class="new-game-form-input" type="number" placeholder="default" name="ships" formControlName="amountOfShips"
+    <input class="new-game-form-input" type="number" placeholder="default" formControlName="amountOfShips"
         appOnlyDigits />
+
     <label for="rows" class="new-game-form-label"> Rows </label>
-    <input class="new-game-form-input" type="number" placeholder="default" name="rows" formControlName="rows"
-        appOnlyDigits />
+    <input class="new-game-form-input" type="number" placeholder="default" formControlName="rows" appOnlyDigits />
+
     <label for="columns" class="new-game-form-label"> Colums </label>
-    <input class="new-game-form-input" type="number" placeholder="default" name="columns" formControlName="columns"
-        appOnlyDigits />
+    <input class="new-game-form-input" [ngClass]="{'error' : gameLevelFormGroup.controls['columns'].errors}"
+        type="number" placeholder="default" formControlName="columns" id="columns" appOnlyDigits />
+    <div class="new-game-form-hint">
+        <span *ngIf="gameLevelFormGroup.controls['columns'].errors">max columns:
+            {{maxColumns}}</span>
+    </div>
 
     <button type="submit" class="new-game-form-btn">
         New Game

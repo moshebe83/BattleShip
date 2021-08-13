@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+
 import { IGameLevelData } from 'src/app/layout/home/home.interface';
 
 @Component({
@@ -10,6 +11,7 @@ import { IGameLevelData } from 'src/app/layout/home/home.interface';
 
 export class NewGameFormComponent implements OnInit {
 
+  @Input() maxColumns: number | undefined;
   @Input() gameLevelFormGroup: FormGroup;
 
   @Output() newGameEmit: EventEmitter<IGameLevelData | undefined> = new EventEmitter<IGameLevelData | undefined>();
@@ -21,13 +23,15 @@ export class NewGameFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public newGameSubmitted(gameDataFormGroup: FormGroup): void {
-    if (gameDataFormGroup.pristine) {
+  public newGameSubmitted(gameLevelFormGroup: FormGroup): void {
+    Object.values(gameLevelFormGroup.controls).map(control => control.errors && control.reset());
+
+    if (gameLevelFormGroup.pristine) {
       this.newGameEmit.emit();
     } else {
-      this.newGameEmit.emit(gameDataFormGroup.value);
+      this.newGameEmit.emit(gameLevelFormGroup.value);
     }
 
-    gameDataFormGroup.reset();
+    gameLevelFormGroup.reset();
   }
 }

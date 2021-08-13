@@ -11,22 +11,22 @@ export class GetIconPipe implements PipeTransform {
 
     switch (shipSize) {
       case 1:
-        iconSrc += 'xs_submarine.png'
+        iconSrc += 'xs'
         break;
       case 2:
-        iconSrc += 'small_submarine.svg'
+        iconSrc += 'small'
         break;
       case 3: case 4: case 5:
-        iconSrc += 'medium_submarine.svg'
+        iconSrc += 'medium'
         break;
       case 6: case 7: case 8:
-        iconSrc += 'large_submarine.svg'
+        iconSrc += 'large'
         break;
       default:
         break;
     }
 
-    return iconSrc;
+    return iconSrc + '_submarine.svg';
   }
 
 }

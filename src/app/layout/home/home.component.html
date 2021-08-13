@@ -9,7 +9,8 @@
 </main>
 
 <div class="side-bars">
-    <app-new-game-form [gameLevelFormGroup]="gameLevelFormGroup" (newGameEmit)="newGameSubmitted($event)">
+    <app-new-game-form [gameLevelFormGroup]="gameLevelFormGroup" [maxColumns]="maxColumns"
+        (newGameEmit)="newGameSubmitted($event)">
     </app-new-game-form>
 
     <aside class="side-bar progress-board">

@@ -13,6 +13,7 @@ import { IAxes, IShipsAmountsList, ISquareItem } from './game-board.interface';
 
 export class GameBoardComponent implements OnInit {
   private largestShipSize: number;
+  private smallestShipSize: number;
   private largestShipImg: number;
   private _gameState: EGameState;
   private _gameData: IGameLevelData;
@@ -53,6 +54,7 @@ export class GameBoardComponent implements OnInit {
     this.strikesCounter = 0;
     this.largestShipSize = 7;
     this.largestShipImg = 7;
+    this.smallestShipSize = 1;
     this.boardSquaresArr = [];
     this.shipsAmountsList = [];
 
@@ -114,7 +116,7 @@ export class GameBoardComponent implements OnInit {
       const getRandomSquareIndex = (): number => Math.floor(Math.random() * this.data.amountOfSquares);
 
       const isVertical: boolean = Boolean(Math.round(Math.random()));
-      const randomShipSize: number = Math.floor(Math.random() * this.largestShipImg) + 1;
+      const randomShipSize: number = Math.floor(Math.random() * this.largestShipImg) + this.smallestShipSize;
       let randomSquareI: number = getRandomSquareIndex();
 
       while (this.boardSquaresArr[randomSquareI].isShip) {

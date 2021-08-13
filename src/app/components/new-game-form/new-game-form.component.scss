@@ -13,14 +13,26 @@
         background-color: transparent;
         width: 100px;
         padding-block: 10px 5px;
-        margin-bottom: 20px;
+        margin-block: 5px 20px;
         transition: all 0.2s;
+        &.error {
+            border-bottom-color: $color-red;
+        }
         &:focus {
             outline: none;
             border: 2px solid rgba(floralwhite, 0.8);
             border-radius: 6px;
+            &.error {
+                border-color: $color-red;
+            }
         }
     }
+    &-hint {
+        transform: translateY(-15px);
+        font-size: 12px;
+        height: 20px;
+    }
+
     &-btn {
         padding: 8px 12px;
         font-family: inherit;

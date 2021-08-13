@@ -34,7 +34,7 @@
         padding: 2px;
     }
 
-    &.won table {
+    &.won &-table {
         filter: blur(4px);
         .game-board-row-square-btn {
             background-color: $color-blue;
@@ -44,23 +44,19 @@
     &-row {
         &-square {
             position: relative;
-            height: 3vw;
-            width: 3vw;
-
-            @media screen and (max-width: 1200px) {
-                height: 4vw;
-                width: 4vw;
-            }
+            height: 44px;
+            width: 44px;
 
             &-btn {
-                position: relative;
                 height: 100%;
                 width: 100%;
+                position: relative;
                 border: none;
                 background-color: rgba($color-primary, 0.85);
                 box-shadow: 0 0 5px 1px white;
                 transition: background-color 0.2s ease-out;
-                padding: 3px;
+                padding: 0;
+                display: block;
 
                 &:hover,
                 &:focus {
@@ -69,7 +65,7 @@
 
                 &.clicked {
                     &.ship {
-                        background-color: rgba(155, 30, 30, 0.8);
+                        background-color: rgba($color-red, 0.8);
                     }
                     &:not(.ship) {
                         background-color: rgba(35, 153, 70, 0.8);
@@ -81,36 +77,20 @@
                 }
 
                 .ship-img {
+                    width: 100%;
+                    height: 100%;
                     z-index: 1;
                     position: absolute;
                     pointer-events: none;
-                    &.xs {
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        &.vertical {
-                            height: 80%;
-                            left: 5px;
-                            top: -40px;
-                        }
-                    }
-                    &:not(.xs) {
-                        height: 100%;
-                        left: 5px;
-                        top: 0;
-                    }
-                    &.small {
-                        left: 2px;
-                    }
+                    left: 0;
+
                     &:not(.small) {
                         filter: brightness(2) contrast(2);
                     }
 
-                    &.vertical {
-                        transform: rotate(90deg);
-                        transform-origin: bottom left;
-                        top: -47px;
-                        left: 0;
+                    &:not(.vertical) {
+                        top: 0;
+                        transform-origin: left;
                     }
                 }
 
