@@ -8,6 +8,13 @@ export interface ISquareItem {
     isVertical?: boolean,
 }
 
+export interface INewShipDetails {
+    index: number,
+    isVertical: boolean,
+    randomShipSize: number,
+    randomSquareI: number
+}
+
 export interface IAxes {
     x: string[],
     y: number[],
@@ -16,4 +23,9 @@ export interface IAxes {
 export interface IShipsAmountsList {
     onBoard: number,
     sunk: number
+}
+
+export interface IShipsSizesRange {
+    min: number,
+    max: number
 }

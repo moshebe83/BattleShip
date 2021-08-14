@@ -19,7 +19,7 @@ export class OnlyDigitsDirective {
     }
     else if (initalValue.startsWith(0) || initalValue < 1 || initalValue > 99) {
       this.elRef.nativeElement.value = this.prevValue;
-      if (control) control.setValue(this.prevValue);
+      control?.setValue(this.prevValue);
     }
 
     this.prevValue = this.elRef.nativeElement.value;

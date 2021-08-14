@@ -1,7 +1,7 @@
 import { EGameLevel } from "src/app/services/battleship.enum";
 
 interface IObjectKeys {
-    [key: string]: number | EGameLevel | undefined;
+    [key: string]: number | (EGameLevel | undefined);
 }
 
 export interface IGameLevelData extends IObjectKeys {

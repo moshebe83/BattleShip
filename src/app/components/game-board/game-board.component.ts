@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EGameState } from 'src/app/services/battleship.enum';
 
 import { IGameLevelData } from 'src/app/layout/home/home.interface';
-import { IAxes, IShipsAmountsList, ISquareItem } from './game-board.interface';
+import { IAxes, INewShipDetails, IShipsAmountsList, IShipsSizesRange, ISquareItem } from './game-board.interface';
 
 @Component({
   selector: 'app-game-board',
@@ -12,8 +12,7 @@ import { IAxes, IShipsAmountsList, ISquareItem } from './game-board.interface';
 })
 
 export class GameBoardComponent implements OnInit {
-  private largestShipSize: number;
-  private smallestShipSize: number;
+  private shipSizesRange: IShipsSizesRange;
   private largestShipImg: number;
   private _gameState: EGameState;
   private _gameData: IGameLevelData;
@@ -52,9 +51,8 @@ export class GameBoardComponent implements OnInit {
   constructor() {
     this.rows = [];
     this.strikesCounter = 0;
-    this.largestShipSize = 7;
+    this.shipSizesRange = { min: 1, max: 7 };
     this.largestShipImg = 7;
-    this.smallestShipSize = 1;
     this.boardSquaresArr = [];
     this.shipsAmountsList = [];
 
@@ -76,9 +74,9 @@ export class GameBoardComponent implements OnInit {
     this.createAxiesLabels();
 
     if (this.largestShipImg < Math.max(this.data.rows, this.data.columns)) {
-      this.largestShipSize = this.largestShipImg;
+      this.shipSizesRange.max = this.largestShipImg;
     } else {
-      this.largestShipSize = Math.max(this.data.rows, this.data.columns);
+      this.shipSizesRange.max = Math.max(this.data.rows, this.data.columns);
     }
   }
 
@@ -111,72 +109,78 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  private spreadShips(): void {
+  private createAllShips(): void {
     for (let i = 0; i < this.data.amountOfShips; i++) {
       const getRandomSquareIndex = (): number => Math.floor(Math.random() * this.data.amountOfSquares);
 
-      const isVertical: boolean = Boolean(Math.round(Math.random()));
-      const randomShipSize: number = Math.floor(Math.random() * this.largestShipImg) + this.smallestShipSize;
-      let randomSquareI: number = getRandomSquareIndex();
-
-      while (this.boardSquaresArr[randomSquareI].isShip) {
-        randomSquareI = getRandomSquareIndex();
+      const currentShip: INewShipDetails = {
+        index: i,
+        isVertical: Boolean(Math.round(Math.random())),
+        randomShipSize: Math.floor(Math.random() * this.shipSizesRange.max) + this.shipSizesRange.min,
+        randomSquareI: getRandomSquareIndex()
       }
 
-      let currentShipSize: number = 0;
-
-      for (let j = 0;
-        j < randomShipSize * (isVertical ? this.data.columns : 1);
-        isVertical ? j += this.data.columns : j++
-      ) {
-        if (randomSquareI + j >= this.data.amountOfSquares ||
-          this.boardSquaresArr[randomSquareI + j].isShip ||
-          (j !== 0 && (randomSquareI + j) % (isVertical ? this.data.rows : this.data.columns) === 0)
-        ) break;
-
-        this.boardSquaresArr[randomSquareI + j] = {
-          isShip: true,
-          isClicked: false,
-          shipId: i,
-          isFirstSquareOfShip: j === 0,
-          shipSize: 1,
-          isVertical: isVertical
-        }
-        currentShipSize++;
+      while (this.boardSquaresArr[currentShip.randomSquareI].isShip) {
+        currentShip.randomSquareI = getRandomSquareIndex();
       }
 
-      this.shipsAmountsList[currentShipSize].onBoard++;
-
-      if (currentShipSize > 1) {
-        this.boardSquaresArr.map(square => square.shipId === i && (square.shipSize = currentShipSize));
-      }
-
+      this.buildCurrentShip(currentShip);
     }
+
     this.shipsAmountListChanged.emit(this.shipsAmountsList);
+  }
+
+  private buildCurrentShip(ship: INewShipDetails): void {
+    let currentShipSize: number = 0;
+
+    for (let j = 0;
+      j < ship.randomShipSize * (ship.isVertical ? this.data.columns : 1);
+      ship.isVertical ? j += this.data.columns : j++
+    ) {
+      if (ship.randomSquareI + j >= this.data.amountOfSquares ||
+        this.boardSquaresArr[ship.randomSquareI + j].isShip ||
+        (j !== 0 && (ship.randomSquareI + j) % (ship.isVertical ? this.data.rows : this.data.columns) === 0)
+      ) break;
+
+      this.boardSquaresArr[ship.randomSquareI + j] = {
+        isShip: true,
+        isClicked: false,
+        shipId: ship.index,
+        isFirstSquareOfShip: j === 0,
+        shipSize: 1,
+        isVertical: ship.isVertical
+      }
+      currentShipSize++;
+    }
+
+    this.shipsAmountsList[currentShipSize].onBoard++;
+
+    if (currentShipSize > 1) {
+      this.boardSquaresArr.map(square => square.shipId === ship.index && (square.shipSize = currentShipSize));
+    }
   }
 
   private startNewGame(): void {
     this.strikesCounter = 0;
     this.createBoardSquaresList();
     this.createShipsAmountsList();
-    this.spreadShips();
+    this.createAllShips();
   }
-
 
 
   public trackByFn(index: number): number {
     return index;
   }
 
-  public squareClicked(squareIndex: number, clickedShipId: number, shipSize: number): void {
+  public squareClicked(squareIndex: number, square: ISquareItem): void {
     this.boardSquaresArr[squareIndex].isClicked = true;
 
-    if (clickedShipId !== -1) {
-      let currentShip = this.boardSquaresArr.filter(({ shipId }) => shipId === clickedShipId);
-      
+    if (square.isShip) {
+      let currentShip = this.boardSquaresArr.filter(({ shipId }) => shipId === square.shipId);
+
       if (currentShip.every(square => square.isClicked)) {
         currentShip.map(square => square.isShipSunk = true);
-        this.shipsAmountsList[shipSize].sunk++;
+        this.shipsAmountsList[square.shipSize].sunk++;
         this.strikesCounter++;
       }
     }
