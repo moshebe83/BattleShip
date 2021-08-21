@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
     this.gameLevelFormGroup = new FormGroup({
       amountOfShips: new FormControl(),
       rows: new FormControl(),
-      columns: new FormControl('', Validators.max(this.maxColumns)),
+      columns: new FormControl(),
     })
   }
 
