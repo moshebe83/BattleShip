@@ -10,6 +10,7 @@ import { HomeComponent } from './layout/home/home.component';
 import { AppComponent } from './app.component';
 import { GameBoardComponent } from './components/game-board/game-board.component';
 import { NewGameFormComponent } from './components/new-game-form/new-game-form.component';
+import { GameBoardSquareComponent } from './components/game-board/game-board-square/game-board-square.component';
 
 // Pipes & Directives
 import { MatrixPipe } from './pipes/matrix.pipe';
@@ -25,6 +26,7 @@ import { OnlyDigitsDirective } from './services/only-digits.directive';
     GetIconPipe,
     NewGameFormComponent,
     OnlyDigitsDirective,
+    GameBoardSquareComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,16 @@
+<button (click)="!square.isClicked && squareClicked(square)" [disabled]="gameState !== EGameState.PLAYING"
+    class="square-btn"
+    [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked, 'won': gameState === EGameState.WON}"
+    [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''"
+    [attr.aria-disabled]="square.isClicked">
+
+    <ng-container *ngIf="gameState === EGameState.PLAYING && square.isFirstSquareOfShip && !square.isShipSunk">
+        <img class="ship-img" [src]="square.shipSize | getIcon" alt="ship icon"
+            [style.transform]="(square.isVertical ? 'rotate(90deg) ' : ' ') + ' scale('+ square.shipSize +')'"
+            [style.top]="square.isVertical ? (square.shipSize - 1) * 50 + '%' : 0"
+            [ngClass]="{'vertical': square.isVertical, 'small' : square.shipSize === 2}">
+    </ng-container>
+
+    <img class="boom-img" *ngIf="gameState === EGameState.PLAYING && square.isShip && square.isClicked;"
+        src="./assets/boom.png" alt="boom icon">
+</button>
