@@ -1,10 +1,11 @@
-<div class="game-board" [ngClass]="{'won': gameState === EGameState.WON, 'lost': gameState === EGameState.LOST}">
+<div class="game-board">
 
   <div class="state-msg" *ngIf="gameState !== EGameState.PLAYING" role="dialog" aria-labelledby="state-msg-img">
     <img id="state-msg-img" *ngIf="gameState === EGameState.WON" src="./assets/trophy.svg" alt="winner image">
   </div>
 
-  <table class="game-board-table">
+  <table class="game-board-table"
+    [ngClass]="{'wide': data.isWideBoard, 'won': gameState === EGameState.WON, 'lost': gameState === EGameState.LOST}">
     <thead>
       <tr>
         <td></td>
@@ -17,25 +18,11 @@
         <th class="game-board-axes">{{axesLabels.y[rowI]}}</th>
 
         <ng-container *ngFor="let square of boardSquaresArr; index as squareI">
-          <td *ngIf="squareI | matrixPipe : rowI : data.columns" class="game-board-row-square">
-
-            <button (click)="!square.isClicked && squareClicked(squareI, square)"
-              [disabled]="gameState !== EGameState.PLAYING" class="game-board-row-square-btn"
-              [ngClass]="{'ship': square.isShip, 'clicked': square.isClicked}"
-              [attr.aria-label]="square.isClicked ? (square.isShip ? 'ship clicked' : 'square clicked') : ''"
-              [attr.aria-disabled]="square.isClicked">
-
-              <ng-container
-                *ngIf="gameState === EGameState.PLAYING && square.isFirstSquareOfShip && !square.isShipSunk">
-                <img class="ship-img" [src]="square.shipSize | getIcon" alt="ship icon"
-                  [style.transform]="(square.isVertical ? 'rotate(90deg) ' : ' ') + ' scale('+ square.shipSize +')'"
-                  [style.top]="square.isVertical ? (square.shipSize - 1) * 50 + '%' : 0"
-                  [ngClass]="{'vertical': square.isVertical, 'small' : square.shipSize === 2}">
-              </ng-container>
-
-              <img class="boom-img" *ngIf="gameState === EGameState.PLAYING && square.isShip && square.isClicked;"
-                src="./assets/boom.png" alt="boom icon">
-            </button>
+          <td *ngIf="squareI | matrixPipe : rowI : data.columns" class="game-board-row-square"
+            [ngClass]="{'large': data.isWideBoard}">
+            <app-game-board-square [square]="square" [gameState]="gameState"
+              (squareClickedEmit)="squareClicked(squareI, $event)">
+            </app-game-board-square>
           </td>
         </ng-container>
 

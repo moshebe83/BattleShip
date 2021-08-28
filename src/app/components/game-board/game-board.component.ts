@@ -70,6 +70,7 @@ export class GameBoardComponent implements OnInit {
 
   private setGameLevel(): void {
     this.data.amountOfSquares = this.data.rows * this.data.columns;
+    this.data.isWideBoard = this.data.columns >= 20;
     this.rows = new Array(this.data.rows);
     this.createAxiesLabels();
 
@@ -186,7 +187,7 @@ export class GameBoardComponent implements OnInit {
     }
 
     if (this.strikesCounter === this.data.amountOfShips) {
-      this.gameStateChanged.emit(EGameState.WON);
+      this.gameStateChanged.emit(EGameState.WON);      
     }
   }
 
