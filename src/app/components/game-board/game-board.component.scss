@@ -23,7 +23,8 @@
 
 .game-board {
     transform: translateX(-10px);
-    margin-inline: 10px;
+    max-width: 800px;
+    margin: auto;
 
     &-axes {
         color: white;
@@ -44,10 +45,12 @@
     &-row {
         &-square {
             position: relative;
-            
+            height: 44px;
+            width: 44px;
+
             &-btn {
-                height: 44px;
-                width: 44px;
+                height: 100%;
+                width: 100%;
                 position: relative;
                 border: none;
                 background-color: rgba($color-primary, 0.85);

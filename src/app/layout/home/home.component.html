@@ -9,7 +9,7 @@
 </main>
 
 <div class="side-bars">
-    <app-new-game-form [gameLevelFormGroup]="gameLevelFormGroup" [maxColumns]="maxColumns"
+    <app-new-game-form [gameLevelFormGroup]="gameLevelFormGroup" [defaultValues]="gameLevels"
         (newGameEmit)="newGameSubmitted($event)">
     </app-new-game-form>
 

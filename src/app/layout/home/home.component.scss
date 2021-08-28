@@ -33,7 +33,7 @@ main {
         }
 
         .line-through {
-            text-decoration: line-through red;
+            text-decoration: line-through lighten($color: $color-red, $amount: 10);
         }
     }
 

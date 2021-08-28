@@ -1,17 +1,25 @@
 <form [formGroup]="gameLevelFormGroup" (submit)="newGameSubmitted(gameLevelFormGroup)" class="side-bar new-game-form">
+    <p *ngIf="tooManyShips" class="new-game-form-error" role="alert">
+        Too many ships for this board size. Clicking "new game" will give you the default board values.
+    </p>
+
     <label for="ships" class="new-game-form-label"> Ships </label>
-    <input class="new-game-form-input" type="number" placeholder="default" formControlName="amountOfShips"
-        appOnlyDigits />
+    <input class="new-game-form-input" [ngClass]="{'error' : tooManyShips}"
+        (change)="onValueChange(gameLevelFormGroup.value.amountOfShips)" type="number"
+        [placeholder]="'default: ' + defaultValues.amountOfShips" formControlName="amountOfShips" appOnlyDigits />
 
     <label for="rows" class="new-game-form-label"> Rows </label>
-    <input class="new-game-form-input" type="number" placeholder="default" formControlName="rows" appOnlyDigits />
+    <input class="new-game-form-input" (change)="onValueChange(gameLevelFormGroup.value.rows)" type="number"
+        [placeholder]="'default: ' + defaultValues.rows" formControlName="rows" appOnlyDigits />
 
     <label for="columns" class="new-game-form-label"> Colums </label>
-    <input class="new-game-form-input" [ngClass]="{'error' : gameLevelFormGroup.controls['columns'].errors}"
-        type="number" placeholder="default" formControlName="columns" id="columns" appOnlyDigits />
+    <input class="new-game-form-input" (change)="onValueChange(gameLevelFormGroup.value.columns)" type="number"
+        [placeholder]="'default: ' + defaultValues.columns" formControlName="columns" id="columns" appOnlyDigits />
+
     <div class="new-game-form-hint">
-        <span *ngIf="gameLevelFormGroup.controls['columns'].errors">max columns:
-            {{maxColumns}}</span>
+        <!-- <p *ngIf="gameLevelFormGroup.controls['columns'].errors">Too many ships for this board size. Clicking "new game"
+            will give you the default board values.</p> -->
+        <!-- [ngClass]="{'error' : gameLevelFormGroup.controls['columns'].errors}" -->
     </div>
 
     <button type="submit" class="new-game-form-btn">

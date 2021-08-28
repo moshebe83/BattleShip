@@ -13,7 +13,6 @@ import { IShipsAmountsList } from 'src/app/components/game-board/game-board.inte
 })
 
 export class HomeComponent implements OnInit {
-  public maxColumns: number;
   public shipsAmountsList: IShipsAmountsList[];
   public gameState: EGameState;
   public gameData: IGameLevelData;
@@ -22,7 +21,6 @@ export class HomeComponent implements OnInit {
   public gameLevelFormGroup: FormGroup;
 
   constructor() {
-    this.maxColumns = 20;
     this.shipsAmountsList = [];
     this.gameState = EGameState.PLAYING;
     this.gameData = {} as IGameLevelData;

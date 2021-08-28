@@ -26,6 +26,18 @@
             }
         }
     }
+
+    &-error {
+        font-size: 11px;
+        background-color: #ffffffdc;
+        font-weight: 700;
+        margin-top: 0;
+        padding: 5px;
+        color: lighten($color: $color-red, $amount: 10);
+        border: 2px solid currentColor;
+
+    }
+
     &-hint {
         transform: translateY(-15px);
         font-size: 12px;
